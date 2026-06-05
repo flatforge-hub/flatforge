@@ -1,0 +1,24 @@
+id: org.example.SampleApp
+name: Sample App
+summary: A demonstration entry for Flatforge
+description: |
+  **Sample App** is a placeholder application that demonstrates the metadata schema
+  used by Flatforge.
+
+  Replace this entry with your actual application. See `docs/SUBMIT.md` for instructions.
+
+  ## Features
+
+  - Demonstrates the YAML metadata format
+  - Shows how AI tool disclosure works
+  - Included as a seed entry for the web frontend
+developer: Flatforge Team
+website: https://flatforge.org
+license: GPL-3.0
+icon: ""
+screenshots: []
+categories:
+  - Utility
+ai_tools_used: "Claude Code"
+version: "1.0.0"
+release_date: "2026-06-01"

@@ -1,0 +1,65 @@
+services:
+
+  # ── Static file server: OSTree repo + React web ───────────────────────────
+  nginx:
+    build: ./nginx
+    restart: unless-stopped
+    # Bind only to localhost — host nginx reverse proxies to this port.
+    # Change LISTEN_ADDR in .env to 0.0.0.0:${HTTP_PORT} only if there is no
+    # host nginx (e.g. standalone VPS without any other web server).
+    ports:
+      - "${LISTEN_ADDR:-127.0.0.1}:${HTTP_PORT:-8080}:80"
+    volumes:
+      - ./flatpak-repo:/srv/ostree:ro
+      - ./web/dist:/srv/web:ro
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  # ── One-shot web builder (profile: build) ─────────────────────────────────
+  web-builder:
+    image: node:20-alpine
+    working_dir: /web
+    volumes:
+      - ./web:/web
+      - ./apps:/apps:ro
+      - web_node_modules:/web/node_modules
+    profiles: ["build"]
+    environment:
+      - APPS_DIR=/apps
+      - VITE_DOMAIN=${DOMAIN:-flatforge.org}
+    # npm ci requires package-lock.json; npm install creates it on first run
+    command: sh -c "npm install && npm run build"
+
+  # ── Repository manager: ostree / flatpak-builder / GPG ────────────────────
+  repo-manager:
+    build: ./repo-manager
+    volumes:
+      - ./flatpak-repo:/repo
+      - ./gpg:/gpg
+    environment:
+      - REPO_PATH=/repo
+      - GNUPGHOME=/gpg/gnupg
+      - GPG_KEY_ID=${GPG_KEY_ID:-}
+      - REPO_DEFAULT_BRANCH=${REPO_DEFAULT_BRANCH:-stable}
+      - DOMAIN=${DOMAIN:-flatforge.org}
+    stdin_open: true
+    tty: true
+
+  # ── One-shot GPG key generator (profile: init) ────────────────────────────
+  gpg-init:
+    build: ./repo-manager
+    volumes:
+      - ./gpg:/gpg
+    profiles: ["init"]
+    environment:
+      - GNUPGHOME=/gpg/gnupg
+      - GPG_KEY_EMAIL=${GPG_KEY_EMAIL:-repo@flatforge.org}
+      - GPG_KEY_NAME=${GPG_KEY_NAME:-Flatforge Repository}
+    command: ["gpg-init"]
+
+volumes:
+  web_node_modules:

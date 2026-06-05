@@ -1,0 +1,192 @@
+name: Flatpak CI/CD
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "manifests/**"
+      - "apps/**"
+  push:
+    branches: [main]
+    paths:
+      - "manifests/**"
+      - "apps/**"
+
+jobs:
+  # ── Detect which apps changed ─────────────────────────────────────────────
+  detect:
+    name: Detect changed apps
+    runs-on: ubuntu-latest
+    outputs:
+      changed_manifests: ${{ steps.diff.outputs.manifests }}
+      has_changes: ${{ steps.diff.outputs.has_changes }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Find changed manifests
+        id: diff
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BASE=${{ github.event.pull_request.base.sha }}
+            HEAD=${{ github.event.pull_request.head.sha }}
+          else
+            BASE=${{ github.event.before }}
+            HEAD=${{ github.sha }}
+          fi
+
+          # Find JSON/YAML files in manifests/ that changed
+          MANIFESTS=$(git diff --name-only "$BASE" "$HEAD" \
+            | grep -E '^manifests/.+\.(json|yaml|yml)$' \
+            | head -10 \
+            || true)
+
+          if [ -z "$MANIFESTS" ]; then
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+            echo "manifests=[]" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+            # Convert newline-delimited list to JSON array
+            JSON=$(echo "$MANIFESTS" | jq -Rsc 'split("\n") | map(select(. != ""))')
+            echo "manifests=$JSON" >> "$GITHUB_OUTPUT"
+          fi
+
+  # ── Build and lint each changed app ───────────────────────────────────────
+  build:
+    name: Build ${{ matrix.manifest }}
+    needs: detect
+    if: needs.detect.outputs.has_changes == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        manifest: ${{ fromJson(needs.detect.outputs.changed_manifests) }}
+
+    container:
+      image: ghcr.io/flathub/flatpak-builder:latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Extract App ID from manifest path
+        id: app
+        run: |
+          MANIFEST="${{ matrix.manifest }}"
+          APP_ID=$(basename "$(dirname "$MANIFEST")")
+          echo "id=$APP_ID" >> "$GITHUB_OUTPUT"
+          echo "manifest=$MANIFEST" >> "$GITHUB_OUTPUT"
+
+      - name: Add Flathub remote (for SDK dependencies)
+        run: |
+          flatpak remote-add --if-not-exists flathub \
+            https://dl.flathub.org/repo/flathub.flatpakrepo
+
+      - name: Lint manifest
+        run: |
+          flatpak-builder-lint --exceptions manifest \
+            "${{ steps.app.outputs.manifest }}" || true
+          # --exceptions allows known upstream issues; remove for strict mode
+
+      - name: Build Flatpak
+        run: |
+          flatpak-builder \
+            --force-clean \
+            --sandbox \
+            --user \
+            --install-deps-from=flathub \
+            --repo=/tmp/build-repo \
+            --disable-rofiles-fuse \
+            /tmp/build-dir \
+            "${{ steps.app.outputs.manifest }}"
+
+      - name: Validate AppStream metadata
+        run: |
+          # Look for metainfo.xml next to manifest
+          METAINFO_DIR="$(dirname '${{ steps.app.outputs.manifest }}')"
+          METAINFO=$(find "$METAINFO_DIR" -name "*.metainfo.xml" | head -1 || true)
+          if [ -n "$METAINFO" ]; then
+            appstreamcli validate "$METAINFO" || true
+          else
+            echo "::warning::No metainfo.xml found for ${{ steps.app.outputs.id }}"
+          fi
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.app.outputs.id }}-repo
+          path: /tmp/build-repo/
+          retention-days: 7
+
+  # ── Deploy on merge to main ───────────────────────────────────────────────
+  deploy:
+    name: Deploy ${{ matrix.manifest }}
+    needs: [detect, build]
+    if: |
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/main' &&
+      needs.detect.outputs.has_changes == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        manifest: ${{ fromJson(needs.detect.outputs.changed_manifests) }}
+
+    container:
+      image: ghcr.io/flathub/flatpak-builder:latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Extract App ID
+        id: app
+        run: |
+          APP_ID=$(basename "$(dirname '${{ matrix.manifest }}')")
+          echo "id=$APP_ID" >> "$GITHUB_OUTPUT"
+
+      - name: Add Flathub remote
+        run: |
+          flatpak remote-add --if-not-exists flathub \
+            https://dl.flathub.org/repo/flathub.flatpakrepo
+
+      - name: Build Flatpak (release)
+        run: |
+          flatpak-builder \
+            --force-clean \
+            --sandbox \
+            --user \
+            --install-deps-from=flathub \
+            --repo=/tmp/build-repo \
+            --disable-rofiles-fuse \
+            /tmp/build-dir \
+            "${{ matrix.manifest }}"
+
+      - name: Upload build repo to VPS
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          APP_ID: ${{ steps.app.outputs.id }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+
+          # Upload built OSTree repo to a staging area on the VPS
+          rsync -avz --delete \
+            -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no" \
+            /tmp/build-repo/ \
+            "$SSH_USER@$SSH_HOST:/tmp/flatforge-incoming/$APP_ID/"
+
+          # Trigger repo-manager to import and sign the app
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no \
+            "$SSH_USER@$SSH_HOST" \
+            "cd /opt/docker/flatforge && \
+             docker compose run --rm repo-manager export-app \
+               '$APP_ID' \
+               '/tmp/flatforge-incoming/$APP_ID'"
+
+      - name: Clean up deploy key
+        if: always()
+        run: rm -f ~/.ssh/deploy_key

@@ -1,0 +1,15 @@
+.env
+flatpak-repo/*
+!flatpak-repo/.gitkeep
+gpg/*
+!gpg/.gitkeep
+web/dist/
+web/node_modules/
+web/src/data/apps.json
+*.flatpak
+*.flatpakref
+*.flatpakrepo
+/tmp/
+*.swp
+*.swo
+web/tsconfig.tsbuildinfo
