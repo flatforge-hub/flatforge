@@ -4,12 +4,10 @@ on:
   pull_request:
     branches: [main]
     paths:
-      - "manifests/**"
       - "apps/**"
   push:
     branches: [main]
     paths:
-      - "manifests/**"
       - "apps/**"
 
 jobs:
@@ -36,9 +34,10 @@ jobs:
             HEAD=${{ github.sha }}
           fi
 
-          # Find JSON/YAML files in manifests/ that changed
+          # Find flatpak manifests in apps/ that changed (exclude metadata.yaml)
           MANIFESTS=$(git diff --name-only "$BASE" "$HEAD" \
-            | grep -E '^manifests/.+\.(json|yaml|yml)$' \
+            | grep -E '^apps/[^/]+/[^/]+\.(json|yaml|yml)$' \
+            | grep -v '/metadata\.yaml$' \
             | head -10 \
             || true)
 

@@ -19,24 +19,29 @@ if (!fs.existsSync(appsDir)) {
   process.exit(0);
 }
 
-const files = fs
-  .readdirSync(appsDir)
-  .filter((f) => f.endsWith('.yaml') || f.endsWith('.yml'))
+const dirs = fs
+  .readdirSync(appsDir, { withFileTypes: true })
+  .filter((d) => d.isDirectory())
+  .map((d) => d.name)
   .sort();
 
 const apps = [];
-for (const file of files) {
-  const filePath = path.join(appsDir, file);
+for (const dir of dirs) {
+  const filePath = path.join(appsDir, dir, 'metadata.yaml');
+  if (!fs.existsSync(filePath)) {
+    console.warn(`[generate-app-data] Skipping ${dir}: no metadata.yaml found`);
+    continue;
+  }
   try {
     const raw = fs.readFileSync(filePath, 'utf8');
     const data = yaml.load(raw);
     if (data && typeof data === 'object') {
       apps.push(data);
     } else {
-      console.warn(`[generate-app-data] Skipping ${file}: not a valid YAML object`);
+      console.warn(`[generate-app-data] Skipping ${dir}/metadata.yaml: not a valid YAML object`);
     }
   } catch (err) {
-    console.error(`[generate-app-data] Failed to parse ${file}: ${err.message}`);
+    console.error(`[generate-app-data] Failed to parse ${dir}/metadata.yaml: ${err.message}`);
   }
 }
 
