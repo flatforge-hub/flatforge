@@ -23,17 +23,17 @@ export default function Footer() {
             <p className="font-semibold text-zinc-400 mb-3">Documentation</p>
             <ul className="space-y-2">
               <li>
-                <a href="https://github.com/flatforge/hub-meta/blob/main/docs/POLICY.md"
+                <a href="https://github.com/flatforge-hub/hub-meta/blob/main/docs/POLICY.md"
                    target="_blank" rel="noopener noreferrer"
                    className="text-zinc-500 hover:text-zinc-300 transition-colors">Policy</a>
               </li>
               <li>
-                <a href="https://github.com/flatforge/hub-meta/blob/main/docs/SECURITY.md"
+                <a href="https://github.com/flatforge-hub/hub-meta/blob/main/docs/SECURITY.md"
                    target="_blank" rel="noopener noreferrer"
                    className="text-zinc-500 hover:text-zinc-300 transition-colors">Security</a>
               </li>
               <li>
-                <a href="https://github.com/flatforge"
+                <a href="https://github.com/flatforge-hub"
                    target="_blank" rel="noopener noreferrer"
                    className="text-zinc-500 hover:text-zinc-300 transition-colors">GitHub</a>
               </li>

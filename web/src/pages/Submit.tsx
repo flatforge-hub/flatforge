@@ -10,9 +10,9 @@ export default function Submit() {
         <Step number={1} title="Fork and clone the submission repo">
           <p className="text-zinc-400">
             Create a fork of{' '}
-            <a href="https://github.com/flatforge/hub-apps" target="_blank" rel="noopener noreferrer"
+            <a href="https://github.com/flatforge-hub/hub-apps" target="_blank" rel="noopener noreferrer"
                className="text-forge-400 hover:text-forge-300">
-              github.com/flatforge/hub-apps
+              github.com/flatforge-hub/hub-apps
             </a>
             , then clone it locally.
           </p>
@@ -86,11 +86,11 @@ git push origin my-app-submission
 
       <div className="mt-6 text-sm text-zinc-500">
         Questions? Open an issue on{' '}
-        <a href="https://github.com/flatforge/hub-apps/issues" target="_blank" rel="noopener noreferrer"
+        <a href="https://github.com/flatforge-hub/hub-apps/issues" target="_blank" rel="noopener noreferrer"
            className="text-zinc-400 hover:text-zinc-300">GitHub</a>.
-        See also: <a href="https://github.com/flatforge/hub-meta/blob/main/docs/POLICY.md"
+        See also: <a href="https://github.com/flatforge-hub/hub-meta/blob/main/docs/POLICY.md"
           target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-zinc-300">Policy</a>{' '}
-        and <a href="https://github.com/flatforge/hub-meta/blob/main/docs/SECURITY.md"
+        and <a href="https://github.com/flatforge-hub/hub-meta/blob/main/docs/SECURITY.md"
           target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-zinc-300">Security</a>.
       </div>
     </div>

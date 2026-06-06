@@ -35,7 +35,7 @@ export default function Header() {
               About
             </NavLink>
             <a
-              href="https://github.com/flatforge"
+              href="https://github.com/flatforge-hub"
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm font-medium text-zinc-400 hover:text-zinc-100 transition-colors"
