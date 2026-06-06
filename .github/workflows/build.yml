@@ -51,10 +51,33 @@ jobs:
             echo "manifests=$JSON" >> "$GITHUB_OUTPUT"
           fi
 
+  # ── Source compliance check ───────────────────────────────────────────────
+  check-sources:
+    name: Check sources ${{ matrix.manifest }}
+    needs: detect
+    if: needs.detect.outputs.has_changes == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        manifest: ${{ fromJson(needs.detect.outputs.changed_manifests) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install pyyaml
+
+      - name: Run source compliance check
+        run: python .github/scripts/check-sources.py "${{ matrix.manifest }}"
+
   # ── Build and lint each changed app ───────────────────────────────────────
   build:
     name: Build ${{ matrix.manifest }}
-    needs: detect
+    needs: [detect, check-sources]
     if: needs.detect.outputs.has_changes == 'true'
     runs-on: ubuntu-latest
     strategy:
