@@ -168,20 +168,25 @@ jobs:
           SSH_USER: ${{ secrets.SSH_USER }}
           APP_ID: ${{ steps.app.outputs.id }}
         run: |
+          # SSH_HOST may be "host:port" or plain "host"
+          SSH_ADDR="${SSH_HOST%%:*}"
+          SSH_PORT="${SSH_HOST##*:}"
+          if [ "$SSH_PORT" = "$SSH_ADDR" ]; then SSH_PORT=22; fi
+
           mkdir -p ~/.ssh
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+          ssh-keyscan -p "$SSH_PORT" -H "$SSH_ADDR" >> ~/.ssh/known_hosts 2>/dev/null
 
           # Upload built OSTree repo to a staging area on the VPS
           rsync -avz --delete \
-            -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no" \
+            -e "ssh -i ~/.ssh/deploy_key -p $SSH_PORT -o StrictHostKeyChecking=no" \
             /tmp/build-repo/ \
-            "$SSH_USER@$SSH_HOST:/tmp/flatforge-incoming/$APP_ID/"
+            "$SSH_USER@$SSH_ADDR:/tmp/flatforge-incoming/$APP_ID/"
 
           # Trigger repo-manager to import and sign the app
-          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no \
-            "$SSH_USER@$SSH_HOST" \
+          ssh -i ~/.ssh/deploy_key -p "$SSH_PORT" -o StrictHostKeyChecking=no \
+            "$SSH_USER@$SSH_ADDR" \
             "cd /opt/docker/flatforge && \
              docker compose run --rm repo-manager export-app \
                '$APP_ID' \
