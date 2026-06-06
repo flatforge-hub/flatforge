@@ -13,7 +13,7 @@ services:
       - ./flatpak-repo:/srv/ostree:ro
       - ./web/dist:/srv/web:ro
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost/"]
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/healthz"]
       interval: 30s
       timeout: 5s
       retries: 3
