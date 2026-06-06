@@ -106,12 +106,13 @@ def cmd_gen_flatpakrepo(args):
 Title=Flatforge
 Url=https://{domain}/repo/
 Homepage=https://{domain}/
-Comment=AI-friendly Flatpak repository
-Description=Flatpak applications including AI-assisted projects. Quality required, slop rejected.
+Comment=Open source apps for the Linux desktop, built with any tools you love.
+Description=Flatpak applications — quality required, slop rejected.
 Icon=https://{domain}/icon.svg
 GPGKey={gpg_b64}
 """
-    out = Path("flatforge.flatpakrepo")
+    # Write into the mounted repo dir so the file persists on the host
+    out = REPO_PATH / "flatforge.flatpakrepo"
     out.write_text(content)
     print(f"Generated {out.resolve()}")
 
