@@ -11,25 +11,25 @@ export default function About() {
       <div className="space-y-10">
         <Section title="Why Flatforge?">
           <p>
-            Flatforge is a Flatpak repository that accepts open-source applications regardless
-            of which tools were used to build them — whether that's a plain text editor, a full IDE,
-            or an AI assistant.
+            Flatforge is a Flatpak repository for open-source applications. It doesn't matter
+            what built yours: a plain text editor, a full IDE, and an AI assistant all qualify.
           </p>
           <p className="mt-3">
-            We believe the Linux desktop benefits from more applications, not fewer. We care about
-            code quality, sandbox integrity, and open-source licensing. We do not care how you wrote the code.
+            More applications make for a healthier Linux desktop, so our reviews focus on what
+            matters: code quality, sandbox integrity, and open-source licensing. How you wrote
+            the code doesn't factor in.
           </p>
         </Section>
 
         <Section title="Our policy in brief">
           <ul className="space-y-2">
             <PolicyItem ok>Open-source licence required (OSI-approved, CC0, or Unlicense)</PolicyItem>
-            <PolicyItem ok>Flatpak sandbox enforced — <code>finish-args</code> reviewed</PolicyItem>
+            <PolicyItem ok>Flatpak sandbox enforced: <code>finish-args</code> reviewed</PolicyItem>
             <PolicyItem ok>AppStream metadata required (icon, description, screenshots)</PolicyItem>
-            <PolicyItem ok>If you used AI tools, mention which ones — transparency, not a condition</PolicyItem>
+            <PolicyItem ok>If you used AI tools, name them in your metadata: it's for transparency, not gatekeeping</PolicyItem>
             <PolicyItem bad>No proprietary applications</PolicyItem>
             <PolicyItem bad>No malware, spyware, or adware</PolicyItem>
-            <PolicyItem bad>No slop — apps must have genuine utility</PolicyItem>
+            <PolicyItem bad>No slop: apps must have genuine utility</PolicyItem>
           </ul>
           <p className="mt-4">
             <a href="https://github.com/flatforge-hub/hub-meta/blob/main/docs/POLICY.md"

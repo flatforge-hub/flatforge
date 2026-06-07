@@ -41,7 +41,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-8 pt-6 border-t border-zinc-900 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-zinc-600">
-          <span>Flatforge — open source infrastructure for open source apps</span>
+          <span>Flatforge: open source infrastructure for open source apps</span>
           <span>AI tools are welcome here</span>
         </div>
       </div>

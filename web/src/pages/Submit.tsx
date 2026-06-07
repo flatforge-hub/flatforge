@@ -3,7 +3,7 @@ export default function Submit() {
     <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12">
       <h1 className="text-3xl font-bold text-zinc-100 mb-2">Submit an App</h1>
       <p className="text-zinc-400 mb-10">
-        Flatforge welcomes open-source Flatpak applications — including those built with AI assistance.
+        Flatforge welcomes open-source Flatpak applications, including those built with AI assistance.
       </p>
 
       <div className="space-y-10">
@@ -26,9 +26,9 @@ cd hub-apps`}</Code>
 cd apps/org.example.MyApp`}</Code>
           <p className="text-zinc-400 mt-3">Your directory must contain:</p>
           <ul className="mt-2 space-y-1 text-sm text-zinc-400">
-            <li className="flex gap-2"><span className="text-forge-400">•</span> <code className="text-zinc-300">org.example.MyApp.json</code> — flatpak-builder manifest</li>
-            <li className="flex gap-2"><span className="text-forge-400">•</span> <code className="text-zinc-300">org.example.MyApp.metainfo.xml</code> — AppStream metadata</li>
-            <li className="flex gap-2"><span className="text-forge-400">•</span> <code className="text-zinc-300">metadata.yaml</code> — web listing metadata (schema below)</li>
+            <li className="flex gap-2"><span className="text-forge-400">•</span> <code className="text-zinc-300">org.example.MyApp.json</code>: flatpak-builder manifest</li>
+            <li className="flex gap-2"><span className="text-forge-400">•</span> <code className="text-zinc-300">org.example.MyApp.metainfo.xml</code>: AppStream metadata</li>
+            <li className="flex gap-2"><span className="text-forge-400">•</span> <code className="text-zinc-300">metadata.yaml</code>: web listing metadata (schema below)</li>
           </ul>
         </Step>
 
@@ -77,10 +77,10 @@ git push origin my-app-submission
       <div className="mt-12 p-5 rounded-xl border border-zinc-800 bg-zinc-900/40">
         <h2 className="font-semibold text-zinc-300 mb-2">A note on tools</h2>
         <p className="text-sm text-zinc-400">
-          Flatforge accepts apps built with any tools — editors, IDEs, compilers, AI assistants, or a combination.
-          If you used AI tools, the <code className="text-zinc-300">ai_tools_used</code> field in{' '}
-          <code className="text-zinc-300">metadata.yaml</code> is the place to mention them. It shows up
-          on the app's listing page. Not required; just appreciated.
+          Flatforge accepts apps built with any tools: editors, IDEs, compilers, AI assistants, or a mix.
+          List any AI tools you used in the <code className="text-zinc-300">ai_tools_used</code> field in{' '}
+          <code className="text-zinc-300">metadata.yaml</code>, and they'll show up on the app's listing
+          page. That's optional, and we're glad when people do it.
         </p>
       </div>
 

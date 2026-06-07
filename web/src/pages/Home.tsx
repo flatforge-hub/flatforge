@@ -122,7 +122,7 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14 text-center">
           <h2 className="text-2xl font-bold text-zinc-100 mb-3">Have an app to share?</h2>
           <p className="text-zinc-400 mb-6 max-w-lg mx-auto">
-            Open source, working in a sandbox, with an icon and a description — that's what we care about.
+            We just need it open source, sandboxed, with an icon and a description.
           </p>
           <a href="/submit" className="btn-primary">
             Submit an app
