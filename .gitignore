@@ -13,3 +13,5 @@ web/src/data/apps.json
 *.swp
 *.swo
 web/tsconfig.tsbuildinfo
+docs/APP-WORKFLOW.md
+docs/LEGAL-STATUS.md
