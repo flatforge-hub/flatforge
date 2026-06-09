@@ -70,11 +70,10 @@ export default function Terms() {
           </li>
           <li>
             Copyright infringement —{' '}
-            <a href="https://github.com/flatforge-hub/flatforge/blob/main/docs/COPYRIGHT.md"
-               target="_blank" rel="noopener noreferrer"
+            <Link to="/copyright"
                className="text-indigo-400 hover:text-indigo-300 underline underline-offset-2">
-              COPYRIGHT.md
-            </a>
+              Copyright Complaints
+            </Link>
           </li>
           <li>
             Policy violations —{' '}
