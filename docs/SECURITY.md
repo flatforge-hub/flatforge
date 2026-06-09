@@ -24,10 +24,24 @@ the VPS. The public key is embedded in `flatforge.flatpakrepo`.
 All applications in Flatforge are built from source in GitHub Actions using the submitted
 `flatpak-builder` manifest. We do not accept pre-built binaries.
 
+## Build provenance
+
+Every build on push to `main` generates a signed SLSA provenance attestation
+(via `actions/attest-build-provenance`) linking the distributed artifact to the
+exact source commit and CI run that produced it. Verify with:
+
+```bash
+gh attestation verify <artifact.tar.gz> --repo flatforge-hub/<AppID>
+```
+
+The OSTree commit hash of each deployed build is also logged as a CI notice,
+creating a traceable record from the OSTree object in the repository back to
+the GitHub Actions run.
+
 ## What we do NOT check (yet)
 
 - Automated static analysis of application source code
-- Reproducible builds verification
+- Bit-for-bit reproducible builds (depends on upstream app build determinism)
 - Runtime behaviour monitoring
 
 These are goals for future development.

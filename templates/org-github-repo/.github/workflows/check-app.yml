@@ -193,6 +193,10 @@ jobs:
     needs: [detect, check-sources]
     if: needs.detect.outputs.has_changes == 'true'
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      attestations: write
+      contents: read
     strategy:
       fail-fast: false
       matrix:
@@ -235,11 +239,21 @@ jobs:
             echo "::warning::No metainfo.xml found"
           fi
 
+      - name: Archive build repo
+        run: |
+          tar -czf /tmp/${{ needs.detect.outputs.app_id }}.tar.gz \
+            -C /tmp build-repo
+
+      - name: Attest build provenance
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-path: /tmp/${{ needs.detect.outputs.app_id }}.tar.gz
+
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ needs.detect.outputs.app_id }}-repo
-          path: /tmp/build-repo/
+          path: /tmp/${{ needs.detect.outputs.app_id }}.tar.gz
           retention-days: 7
 
   # ── Deploy on merge to main ───────────────────────────────────────────────
@@ -276,6 +290,13 @@ jobs:
             --disable-rofiles-fuse \
             /tmp/build-dir \
             "$MANIFEST"
+
+      - name: Log OSTree commit hashes
+        run: |
+          ostree --repo=/tmp/build-repo refs 2>/dev/null | while read ref; do
+            hash=$(ostree --repo=/tmp/build-repo rev-parse "$ref" 2>/dev/null)
+            echo "::notice::deployed: $ref @ $hash"
+          done
 
       - name: Upload build repo to VPS
         env:
