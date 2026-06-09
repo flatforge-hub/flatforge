@@ -49,7 +49,7 @@ screenshots:
   - https://example.com/screenshot2.png
 categories:
   - Utility
-ai_tools_used: "Claude Code"   # omit if none`}</Code>
+ai_tools_used: "Claude Code, GitHub Copilot"   # omit if none`}</Code>
           <p className="text-zinc-400 mt-3 text-sm">
             <code className="text-zinc-300">version</code> and{' '}
             <code className="text-zinc-300">release_date</code> are read automatically
