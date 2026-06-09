@@ -7,23 +7,24 @@ export default function Submit() {
       </p>
 
       <div className="space-y-10">
-        <Step number={1} title="Fork and clone the submission repo">
+        <Step number={1} title="Clone the submission branch">
           <p className="text-zinc-400">
-            Create a fork of{' '}
-            <a href="https://github.com/flatforge-hub/hub-apps" target="_blank" rel="noopener noreferrer"
+            Submissions go into the{' '}
+            <a href="https://github.com/flatforge-hub/flatforge" target="_blank" rel="noopener noreferrer"
                className="text-forge-400 hover:text-forge-300">
-              github.com/flatforge-hub/hub-apps
+              flatforge-hub/flatforge
             </a>
-            , then clone it locally.
+            {' '}repo via the <code className="text-zinc-300">new-sub</code> orphan branch.
           </p>
-          <Code>{`git clone https://github.com/YOUR_USERNAME/hub-apps
-cd hub-apps`}</Code>
+          <Code>{`git clone --single-branch --branch new-sub \\
+    git@github.com:flatforge-hub/flatforge.git
+cd flatforge
+git checkout -b org.example.MyApp`}</Code>
         </Step>
 
         <Step number={2} title="Add your app directory">
           <p className="text-zinc-400">Create a directory named after your App ID (reverse-DNS format):</p>
-          <Code>{`mkdir -p apps/org.example.MyApp
-cd apps/org.example.MyApp`}</Code>
+          <Code>{`mkdir -p apps/org.example.MyApp`}</Code>
           <p className="text-zinc-400 mt-3">Your directory must contain:</p>
           <ul className="mt-2 space-y-1 text-sm text-zinc-400">
             <li className="flex gap-2"><span className="text-forge-400">•</span> <code className="text-zinc-300">org.example.MyApp.json</code>: flatpak-builder manifest</li>
@@ -55,13 +56,14 @@ release_date: "2026-06-01"`}</Code>
         <Step number={4} title="Open a Pull Request">
           <p className="text-zinc-400">
             Push your branch and open a PR against{' '}
-            <code className="text-zinc-300">flatforge/hub-apps:main</code>.
+            <code className="text-zinc-300">new-sub</code>{' '}
+            (not <code className="text-zinc-300">main</code>).
             GitHub Actions will automatically build and lint your Flatpak.
           </p>
           <Code>{`git add apps/org.example.MyApp/
 git commit -m "Add org.example.MyApp"
-git push origin my-app-submission
-# Then open a PR on GitHub`}</Code>
+git push origin org.example.MyApp
+# Then open a PR targeting new-sub on GitHub`}</Code>
         </Step>
 
         <Step number={5} title="Review process">
@@ -69,7 +71,7 @@ git push origin my-app-submission
             <li className="flex gap-2"><span className="text-emerald-400">✓</span> CI builds your Flatpak and runs <code>flatpak-builder-lint</code></li>
             <li className="flex gap-2"><span className="text-emerald-400">✓</span> A maintainer reviews sandbox permissions (<code>finish-args</code>)</li>
             <li className="flex gap-2"><span className="text-emerald-400">✓</span> AppStream metadata is validated</li>
-            <li className="flex gap-2"><span className="text-emerald-400">✓</span> On merge, the app is published to the OSTree repository</li>
+            <li className="flex gap-2"><span className="text-emerald-400">✓</span> On acceptance, your app gets its own repo at <code>flatforge-hub/org.example.MyApp</code></li>
           </ul>
         </Step>
       </div>
@@ -86,11 +88,11 @@ git push origin my-app-submission
 
       <div className="mt-6 text-sm text-zinc-500">
         Questions? Open an issue on{' '}
-        <a href="https://github.com/flatforge-hub/hub-apps/issues" target="_blank" rel="noopener noreferrer"
+        <a href="https://github.com/flatforge-hub/flatforge/issues" target="_blank" rel="noopener noreferrer"
            className="text-zinc-400 hover:text-zinc-300">GitHub</a>.
-        See also: <a href="https://github.com/flatforge-hub/hub-meta/blob/main/docs/POLICY.md"
+        See also: <a href="https://github.com/flatforge-hub/flatforge/blob/main/docs/POLICY.md"
           target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-zinc-300">Policy</a>{' '}
-        and <a href="https://github.com/flatforge-hub/hub-meta/blob/main/docs/SECURITY.md"
+        and <a href="https://github.com/flatforge-hub/flatforge/blob/main/docs/SECURITY.md"
           target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-zinc-300">Security</a>.
       </div>
     </div>
