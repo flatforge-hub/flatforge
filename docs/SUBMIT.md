@@ -45,6 +45,7 @@ description: |                 # Markdown supported
   Longer description.
 developer: Jane Doe
 website: https://example.com
+source: https://github.com/example/myapp  # public source repository or archive
 license: GPL-3.0               # SPDX identifier — see spdx.org/licenses
 icon: https://example.com/icon.png  # 256×256 or larger PNG/SVG
 screenshots:
@@ -90,6 +91,7 @@ python .github/scripts/check-sources.py \
 ## Review criteria
 
 - OSI-approved open-source licence
+- `source` field linking to the publicly accessible source repository or archive
 - Valid AppStream metadata (icon, description, screenshots)
 - Minimal sandbox permissions — no unnecessary `finish-args`
 - App builds cleanly from the manifest

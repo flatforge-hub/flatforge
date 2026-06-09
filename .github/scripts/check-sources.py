@@ -280,6 +280,12 @@ def check_metadata(metadata_path: Path) -> list[Issue]:
         issues.append(("error", "metadata.yaml is empty or invalid YAML"))
         return issues
 
+    source = data.get("source", "")
+    if not source:
+        issues.append(("error", "metadata.yaml: 'source' field is missing — provide a URL to the public source repository or archive"))
+    elif not str(source).startswith(("https://", "http://")):
+        issues.append(("error", f"metadata.yaml: 'source' must be a URL (got '{source}')"))
+
     raw = data.get("license", "")
     if not raw:
         issues.append(("error", "metadata.yaml: 'license' field is missing"))

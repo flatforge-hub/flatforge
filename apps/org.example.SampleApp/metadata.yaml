@@ -14,6 +14,7 @@ description: |
   - Included as a seed entry for the web frontend
 developer: Flatforge Team
 website: https://flatforge.org
+source: https://github.com/flatforge-hub/flatforge
 license: GPL-3.0
 icon: ""
 screenshots: []

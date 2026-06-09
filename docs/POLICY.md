@@ -12,6 +12,8 @@ Quality is required. Slop is not.
 ### Required
 
 - **Open-source licence** — must be OSI-approved, CC0, or Unlicense (SPDX identifier required)
+- **Source code URL** — a `source` field in `metadata.yaml` pointing to the publicly accessible
+  source repository or archive; required for GPL/LGPL compliance and general transparency
 - **AppStream metadata** — valid `metainfo.xml` with description, icon, and at least one screenshot
 - **Correct App ID** — reverse-DNS format, must match a domain the developer controls or a well-known
   project namespace (e.g. `io.github.username.AppName`)

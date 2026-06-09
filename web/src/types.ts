@@ -5,6 +5,7 @@ export interface App {
   description: string
   developer: string
   website: string
+  source: string
   license: string
   icon: string
   screenshots: string[]
