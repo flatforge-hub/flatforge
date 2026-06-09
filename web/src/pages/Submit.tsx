@@ -27,8 +27,12 @@ git checkout -b org.example.MyApp`}</Code>
           <Code>{`mkdir -p apps/org.example.MyApp`}</Code>
           <p className="text-zinc-400 mt-3">Your directory must contain:</p>
           <ul className="mt-2 space-y-1 text-sm text-zinc-400">
-            <li className="flex gap-2"><span className="text-forge-400">•</span> <code className="text-zinc-300">org.example.MyApp.json</code>: flatpak-builder manifest</li>
-            <li className="flex gap-2"><span className="text-forge-400">•</span> <code className="text-zinc-300">org.example.MyApp.metainfo.xml</code>: AppStream metadata</li>
+            <li className="flex gap-2"><span className="text-forge-400">•</span> <code className="text-zinc-300">org.example.MyApp.json</code>:{' '}
+              <a href="https://docs.flatpak.org/en/latest/manifests.html" target="_blank" rel="noopener noreferrer" className="text-forge-400 hover:text-forge-300">flatpak-builder manifest</a>
+            </li>
+            <li className="flex gap-2"><span className="text-forge-400">•</span> <code className="text-zinc-300">org.example.MyApp.metainfo.xml</code>:{' '}
+              <a href="https://www.freedesktop.org/software/appstream/docs/" target="_blank" rel="noopener noreferrer" className="text-forge-400 hover:text-forge-300">AppStream metadata</a>
+            </li>
             <li className="flex gap-2"><span className="text-forge-400">•</span> <code className="text-zinc-300">metadata.yaml</code>: web listing metadata (schema below)</li>
           </ul>
         </Step>

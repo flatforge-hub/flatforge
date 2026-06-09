@@ -30,8 +30,8 @@ Your PR must target **`new-sub`**, not `main`.
 ```
 apps/
   org.example.MyApp/
-    org.example.MyApp.json          # flatpak-builder manifest (or .yaml)
-    org.example.MyApp.metainfo.xml  # AppStream metadata
+    org.example.MyApp.json          # flatpak-builder manifest (or .yaml) — docs.flatpak.org/en/latest/manifests.html
+    org.example.MyApp.metainfo.xml  # AppStream metadata — freedesktop.org/software/appstream/docs
     metadata.yaml                   # Flatforge web listing metadata
 ```
 
