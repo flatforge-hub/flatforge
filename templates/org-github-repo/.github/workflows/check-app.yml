@@ -97,6 +97,96 @@ jobs:
       - name: Run source compliance check
         run: python _hub-meta/.github/scripts/check-sources.py "${{ matrix.manifest }}"
 
+  # ── Sandbox permission diff ───────────────────────────────────────────────
+  # Errors if finish-args were added compared to the base branch.
+  # Runs only on PRs so there is always a base to compare against.
+  check-permissions:
+    name: Review finish-args ${{ matrix.manifest }}
+    needs: detect
+    if: |
+      github.event_name == 'pull_request' &&
+      needs.detect.outputs.has_changes == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        manifest: ${{ fromJson(needs.detect.outputs.changed_manifests) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install pyyaml
+
+      - name: Diff finish-args
+        env:
+          MANIFEST: ${{ matrix.manifest }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          python3 << 'PYEOF'
+          import json, os, subprocess, sys
+          from pathlib import Path
+
+          try:
+              import yaml
+          except ImportError:
+              yaml = None
+
+          manifest = os.environ["MANIFEST"]
+          base_sha = os.environ["BASE_SHA"]
+
+          def load(content, path):
+              if path.endswith(".json"):
+                  return json.loads(content)
+              if yaml:
+                  return yaml.safe_load(content)
+              return None
+
+          try:
+              raw = subprocess.check_output(
+                  ["git", "show", f"{base_sha}:{manifest}"],
+                  stderr=subprocess.DEVNULL,
+              ).decode()
+              base = load(raw, manifest) or {}
+          except subprocess.CalledProcessError:
+              base = None  # new app — no previous version
+
+          try:
+              head = load(Path(manifest).read_text(), manifest) or {}
+          except Exception as e:
+              print(f"::error::Could not read manifest: {e}")
+              sys.exit(1)
+
+          head_args = sorted(head.get("finish-args", []))
+
+          if base is None:
+              summary = " ".join(head_args) if head_args else "none"
+              print(f"::notice file={manifest}::New app — finish-args: {summary}")
+              sys.exit(0)
+
+          base_args = sorted(base.get("finish-args", []))
+          added   = [a for a in head_args if a not in base_args]
+          removed = [a for a in base_args if a not in head_args]
+
+          if not added and not removed:
+              print("::notice::finish-args unchanged")
+              sys.exit(0)
+
+          for a in added:
+              print(f"::error file={manifest}::Sandbox permission added: {a}")
+          for r in removed:
+              print(f"::notice file={manifest}::Sandbox permission removed: {r}")
+
+          if added:
+              print("::error::This PR adds sandbox permissions — a core maintainer must review and justify each addition above")
+              sys.exit(1)
+          PYEOF
+
   # ── Build and lint ─────────────────────────────────────────────────────────
   build:
     name: Build ${{ matrix.manifest }}
