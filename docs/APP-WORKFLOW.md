@@ -96,11 +96,9 @@ git push origin new-sub
 
 ## TODO (not yet implemented)
 
-- [ ] Create org template repo for per-app repos — use `templates/per-app-repo/`
-      as the starting point (CODEOWNERS, `.github/workflows/ci.yml`, README stub)
-- [ ] Create `new-sub` orphan branch in `flatforge-hub/flatforge`
-- [ ] Deploy reusable workflow to `flatforge-hub/.github` — file is ready at
-      `templates/org-github-repo/.github/workflows/check-app.yml`
+- [x] Create org template repo for per-app repos → `flatforge-hub/app-template`
+- [x] Create `new-sub` orphan branch in `flatforge-hub/flatforge`
+- [x] Deploy reusable workflow to `flatforge-hub/.github`
 - [x] Update `docs/SUBMIT.md` to reflect the new submission workflow
 - [ ] Decide: auto-merge bot (GitHub Actions) or manual merge by core maintainer
       for non-sensitive changes (`metadata.yaml`, `*.metainfo.xml`)
