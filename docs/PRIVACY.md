@@ -23,13 +23,11 @@ operations, error diagnosis, and abuse detection.
 
 ## Third parties
 
-**Cloudflare** — acts as a CDN and reverse proxy in front of the VPS. Cloudflare
-processes real IP addresses before requests reach nginx. Operators who use
-Cloudflare should ensure they have accepted Cloudflare's standard Data Processing
-Addendum (available in the Cloudflare dashboard).
-
 **GitHub** — app submissions and issue tracking. Governed by the GitHub Privacy
 Statement; Flatforge has no control over data processed there.
+
+If the deployment uses a CDN or reverse proxy (e.g. Cloudflare), add it here and
+ensure a Data Processing Addendum is in place with that provider.
 
 ## Log retention
 

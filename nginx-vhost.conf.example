@@ -67,7 +67,8 @@ server {
 
     # Access log is intentionally off: the Docker nginx layer logs requests
     # with anonymized IPs (see nginx/default.conf). Logging here would write
-    # full client IPs sourced from CF-Connecting-IP.
+    # full client IPs (from CF-Connecting-IP if behind Cloudflare, or directly
+    # from $remote_addr otherwise).
     access_log off;
     error_log  /var/log/nginx/flatforge.error.log;
 }

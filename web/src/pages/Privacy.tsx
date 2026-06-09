@@ -28,21 +28,6 @@ export default function Privacy() {
       </section>
 
       <section className="mb-10">
-        <h2 className="text-lg font-semibold text-zinc-200 mb-3">Cloudflare</h2>
-        <p className="text-zinc-400 leading-relaxed">
-          Flatforge uses <strong className="text-zinc-300">Cloudflare</strong> as a CDN and reverse
-          proxy. Cloudflare processes network traffic — including real IP addresses — before
-          requests reach our server, acting as a data processor on our behalf. Their data practices
-          are governed by the{' '}
-          <a href="https://www.cloudflare.com/privacypolicy/"
-             target="_blank" rel="noopener noreferrer"
-             className="text-indigo-400 hover:text-indigo-300 underline underline-offset-2">
-            Cloudflare Privacy Policy
-          </a>.
-        </p>
-      </section>
-
-      <section className="mb-10">
         <h2 className="text-lg font-semibold text-zinc-200 mb-3">GitHub</h2>
         <p className="text-zinc-400 leading-relaxed">
           App submissions and issue reports are handled through GitHub. Any data you provide
