@@ -32,7 +32,7 @@ export default function About() {
             <PolicyItem bad>No slop: apps must have genuine utility</PolicyItem>
           </ul>
           <p className="mt-4">
-            <a href="https://github.com/flatforge-hub/hub-meta/blob/main/docs/POLICY.md"
+            <a href="https://github.com/flatforge-hub/flatforge/blob/main/docs/POLICY.md"
                target="_blank" rel="noopener noreferrer"
                className="text-forge-400 hover:text-forge-300 text-sm">
               Read the full policy →
@@ -69,7 +69,7 @@ export default function About() {
           <Link to="/submit" className="btn-secondary text-sm">
             Submit an App
           </Link>
-          <a href="https://github.com/flatforge-hub/hub-meta/blob/main/docs/POLICY.md"
+          <a href="https://github.com/flatforge-hub/flatforge/blob/main/docs/POLICY.md"
              target="_blank" rel="noopener noreferrer"
              className="btn-secondary text-sm">
             Full Policy

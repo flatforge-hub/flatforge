@@ -62,7 +62,7 @@ export default function Terms() {
         <ul className="space-y-2 text-zinc-400">
           <li>
             Security vulnerabilities —{' '}
-            <a href="https://github.com/flatforge-hub/hub-meta/blob/main/docs/SECURITY.md"
+            <a href="https://github.com/flatforge-hub/flatforge/blob/main/docs/SECURITY.md"
                target="_blank" rel="noopener noreferrer"
                className="text-indigo-400 hover:text-indigo-300 underline underline-offset-2">
               SECURITY.md
@@ -70,7 +70,7 @@ export default function Terms() {
           </li>
           <li>
             Copyright infringement —{' '}
-            <a href="https://github.com/flatforge-hub/hub-meta/blob/main/docs/COPYRIGHT.md"
+            <a href="https://github.com/flatforge-hub/flatforge/blob/main/docs/COPYRIGHT.md"
                target="_blank" rel="noopener noreferrer"
                className="text-indigo-400 hover:text-indigo-300 underline underline-offset-2">
               COPYRIGHT.md
@@ -78,7 +78,7 @@ export default function Terms() {
           </li>
           <li>
             Policy violations —{' '}
-            <a href="https://github.com/flatforge-hub/hub-meta/issues"
+            <a href="https://github.com/flatforge-hub/flatforge/issues"
                target="_blank" rel="noopener noreferrer"
                className="text-indigo-400 hover:text-indigo-300 underline underline-offset-2">
               GitHub Issues

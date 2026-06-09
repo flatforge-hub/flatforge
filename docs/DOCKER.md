@@ -42,7 +42,7 @@ Then proceed with the setup below.
 ### 1. Clone and configure
 
 ```bash
-git clone https://github.com/flatforge-hub/hub-meta /opt/docker/flatforge
+git clone https://github.com/flatforge-hub/flatforge /opt/docker/flatforge
 cd /opt/docker/flatforge
 cp .env.example .env
 $EDITOR .env   # set DOMAIN, GPG_KEY_EMAIL, GPG_KEY_NAME

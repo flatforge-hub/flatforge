@@ -53,7 +53,7 @@ If you find a security issue with:
 - **An application in the repository** — open a GitHub issue with the label `security`
   in `flatforge/hub-apps`. If sensitive, email the maintainers privately first.
 - **The Flatforge infrastructure** — open a GitHub issue with the label `security`
-  in `flatforge/hub-meta`.
+  in `flatforge-hub/flatforge`.
 
 Please include:
 - Which application or component is affected
