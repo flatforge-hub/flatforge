@@ -42,7 +42,7 @@ export default function Home() {
             </span>
           </h1>
           <p className="max-w-2xl mx-auto text-lg text-zinc-400 mb-2">
-            Built with any tools you love.
+            Built with any tools you use.
           </p>
           <p className="max-w-2xl mx-auto text-base text-zinc-500 mb-10">
             Quality required, slop rejected.

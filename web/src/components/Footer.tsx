@@ -8,7 +8,7 @@ export default function Footer() {
           <div>
             <p className="font-semibold text-zinc-100 mb-3">Flatforge</p>
             <p className="text-zinc-500 leading-relaxed">
-              An AI-friendly alternative Flatpak repository for open-source Linux applications.
+              A Flatpak repository for open-source Linux applications.
             </p>
           </div>
           <div>
@@ -41,7 +41,6 @@ export default function Footer() {
         </div>
         <div className="mt-8 pt-6 border-t border-zinc-900 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-zinc-600">
           <span>Flatforge: open source infrastructure for open source apps</span>
-          <span>AI tools are welcome here</span>
         </div>
       </div>
     </footer>

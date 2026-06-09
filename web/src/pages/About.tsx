@@ -5,7 +5,7 @@ export default function About() {
     <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12">
       <h1 className="text-3xl font-bold text-zinc-100 mb-2">About Flatforge</h1>
       <p className="text-zinc-400 mb-10 text-lg">
-        Open source apps for the Linux desktop, built with any tools you love.
+        Open source apps for the Linux desktop, built with any tools you use.
       </p>
 
       <div className="space-y-10">
@@ -26,7 +26,7 @@ export default function About() {
             <PolicyItem ok>Open-source licence required (OSI-approved, CC0, or Unlicense)</PolicyItem>
             <PolicyItem ok>Flatpak sandbox enforced: <code>finish-args</code> reviewed</PolicyItem>
             <PolicyItem ok>AppStream metadata required (icon, description, screenshots)</PolicyItem>
-            <PolicyItem ok>If you used AI tools, name them in your metadata: it's for transparency, not gatekeeping</PolicyItem>
+            <PolicyItem ok>If you used AI tools, name them in your metadata for transparency</PolicyItem>
             <PolicyItem bad>No proprietary applications</PolicyItem>
             <PolicyItem bad>No malware, spyware, or adware</PolicyItem>
             <PolicyItem bad>No slop: apps must have genuine utility</PolicyItem>

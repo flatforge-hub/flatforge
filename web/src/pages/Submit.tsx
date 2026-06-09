@@ -3,7 +3,7 @@ export default function Submit() {
     <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12">
       <h1 className="text-3xl font-bold text-zinc-100 mb-2">Submit an App</h1>
       <p className="text-zinc-400 mb-10">
-        Flatforge welcomes open-source Flatpak applications, including those built with AI assistance.
+        Flatforge accepts open-source Flatpak applications.
       </p>
 
       <div className="space-y-10">
@@ -95,7 +95,7 @@ git push origin org.example.MyApp
           Flatforge accepts apps built with any tools: editors, IDEs, compilers, AI assistants, or a mix.
           List any AI tools you used in the <code className="text-zinc-300">ai_tools_used</code> field in{' '}
           <code className="text-zinc-300">metadata.yaml</code>, and they'll show up on the app's listing
-          page. That's optional, and we're glad when people do it.
+          page. That's optional.
         </p>
       </div>
 
