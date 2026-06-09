@@ -33,20 +33,36 @@ Statement; Flatforge has no control over data processed there.
 
 ## Log retention
 
-Default: 90 days. Operators should configure log rotation accordingly:
+Default: 90 days. Logs live in two places:
 
-```bash
-# /etc/logrotate.d/flatforge-nginx
-/opt/docker/flatforge/logs/nginx/*.log {
+**Docker nginx** (access logs with anonymized IPs) — rotated by Docker's json-file
+driver. Set in `docker-compose.yml` under the `nginx` service:
+
+```yaml
+logging:
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "90"
+```
+
+Takes effect after the next container recreation (`docker compose up -d --force-recreate nginx`).
+
+**Host nginx** (error log only — access log is disabled to avoid logging full IPs) —
+rotated by logrotate. Create `/etc/logrotate.d/flatforge`:
+
+```
+/var/log/nginx/flatforge.error.log {
     daily
     rotate 90
     compress
     delaycompress
     missingok
     notifempty
+    create 0640 www-data adm
     sharedscripts
     postrotate
-        docker compose -f /opt/docker/flatforge/docker-compose.yml kill -s USR1 nginx
+        invoke-rc.d nginx rotate >/dev/null 2>&1
     endscript
 }
 ```

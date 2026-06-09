@@ -12,6 +12,11 @@ services:
     volumes:
       - ./flatpak-repo:/srv/ostree:ro
       - ./web/dist:/srv/web:ro
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "90"
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://127.0.0.1/healthz"]
       interval: 30s
