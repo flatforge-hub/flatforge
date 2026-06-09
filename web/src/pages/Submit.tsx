@@ -42,15 +42,24 @@ description: |
   Longer description in **Markdown**.
 developer: Your Name
 website: https://example.com
-license: GPL-3.0
+license: GPL-3.0        # SPDX identifier
 icon: https://example.com/icon.png
 screenshots:
   - https://example.com/screenshot1.png
+  - https://example.com/screenshot2.png
 categories:
   - Utility
-ai_tools_used: "Claude Code, GitHub Copilot"   # omit if none
-version: "1.0.0"
-release_date: "2026-06-01"`}</Code>
+ai_tools_used: "Claude Code"   # omit if none`}</Code>
+          <p className="text-zinc-400 mt-3 text-sm">
+            <code className="text-zinc-300">version</code> and{' '}
+            <code className="text-zinc-300">release_date</code> are read automatically
+            from <code className="text-zinc-300">&lt;releases&gt;</code> in your{' '}
+            <code className="text-zinc-300">*.metainfo.xml</code> — no need to repeat them here.
+            For the <code className="text-zinc-300">license</code> field use an SPDX identifier;
+            see the full list at{' '}
+            <a href="https://spdx.org/licenses/" target="_blank" rel="noopener noreferrer"
+               className="text-forge-400 hover:text-forge-300">spdx.org/licenses</a>.
+          </p>
         </Step>
 
         <Step number={4} title="Open a Pull Request">

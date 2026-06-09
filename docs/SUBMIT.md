@@ -45,15 +45,23 @@ description: |                 # Markdown supported
   Longer description.
 developer: Jane Doe
 website: https://example.com
-license: GPL-3.0               # SPDX identifier, must be OSI-approved
+license: GPL-3.0               # SPDX identifier — see spdx.org/licenses
 icon: https://example.com/icon.png  # 256×256 or larger PNG/SVG
 screenshots:
-  - https://example.com/ss1.png
+  - https://example.com/screenshot1.png
+  - https://example.com/screenshot2.png
 categories:
   - Utility                    # see specifications.freedesktop.org/menu-spec
 ai_tools_used: "Claude Code"   # optional; omit if no AI tools used
-version: "1.0.0"
-release_date: "2026-06-01"     # ISO 8601
+```
+
+`version` and `release_date` are read automatically from the `<releases>` element
+in your `*.metainfo.xml` — do not duplicate them here. Example metainfo.xml entry:
+
+```xml
+<releases>
+  <release version="1.0.0" date="2026-06-01"/>
+</releases>
 ```
 
 ## What CI checks

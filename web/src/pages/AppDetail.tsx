@@ -182,7 +182,8 @@ export default function AppDetail() {
   )
 }
 
-function MetaRow({ label, value, mono }: { label: string; value: string; mono?: boolean }) {
+function MetaRow({ label, value, mono }: { label: string; value?: string; mono?: boolean }) {
+  if (!value) return null
   return (
     <div className="flex justify-between gap-4">
       <span className="text-zinc-500 shrink-0">{label}</span>
