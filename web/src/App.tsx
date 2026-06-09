@@ -5,6 +5,7 @@ import Home from './pages/Home'
 import AppDetail from './pages/AppDetail'
 import Submit from './pages/Submit'
 import About from './pages/About'
+import Privacy from './pages/Privacy'
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
             <Route path="/app/:id" element={<AppDetail />} />
             <Route path="/submit" element={<Submit />} />
             <Route path="/about" element={<About />} />
+            <Route path="/privacy" element={<Privacy />} />
           </Routes>
         </main>
         <Footer />

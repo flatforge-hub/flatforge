@@ -22,6 +22,7 @@ export default function Footer() {
           <div>
             <p className="font-semibold text-zinc-400 mb-3">Documentation</p>
             <ul className="space-y-2">
+              <li><Link to="/privacy" className="text-zinc-500 hover:text-zinc-300 transition-colors">Privacy</Link></li>
               <li>
                 <a href="https://github.com/flatforge-hub/hub-meta/blob/main/docs/POLICY.md"
                    target="_blank" rel="noopener noreferrer"
