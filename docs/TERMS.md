@@ -47,6 +47,19 @@ before installing it. Review the application's source code, licence, and
 - Copyright infringement: see `COPYRIGHT.md`
 - Policy violations: open an issue in the GitHub repository
 
+## Service termination
+
+Flatforge may suspend or permanently discontinue the repository and all associated
+services at any time, for any reason, without obligation to provide advance notice.
+
+Upon discontinuation:
+- Application distribution will cease.
+- The repository contents (manifests, metadata, source code) will remain accessible
+  on GitHub for as long as GitHub hosts them, subject to GitHub's own policies.
+
+Where reasonably practical, maintainers will provide advance notice of a planned
+shutdown via the repository README and the Flatforge website.
+
 ## Changes to these terms
 
 These terms may be updated at any time. The current version is always available

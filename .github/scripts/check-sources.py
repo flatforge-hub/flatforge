@@ -127,6 +127,12 @@ SOURCE_URL_INDICATORS: list[str] = [
     r"\.orig\.",
 ]
 
+# Well-known organization namespaces that require maintainer approval.
+KNOWN_ORG_NAMESPACES: tuple[str, ...] = (
+    "org.gnome.", "org.kde.", "org.freedesktop.", "org.gtk.",
+    "io.elementary.", "org.xfce.",
+)
+
 # Commands that indicate real compilation is happening.
 COMPILER_PATTERNS: list[str] = [
     r"\bmake\b", r"\bcmake\b", r"\bmeson\b", r"\bninja\b",
@@ -256,6 +262,69 @@ def check_build_commands(module: dict) -> list[Issue]:
         "compilation step detected — confirm you are building from source, "
         "not installing a pre-compiled binary",
     )]
+
+
+# ---------------------------------------------------------------------------
+# App ID namespace check
+# ---------------------------------------------------------------------------
+
+def check_app_id_namespace(manifest: dict) -> list[Issue]:
+    """Verify that the App ID namespace matches the main source repository."""
+    issues: list[Issue] = []
+    app_id: str = manifest.get("app-id") or manifest.get("id", "")
+    if not app_id:
+        issues.append(("warning", "Manifest has no 'app-id' field"))
+        return issues
+
+    parts = app_id.split(".")
+
+    if app_id.startswith("io.github.") or app_id.startswith("io.gitlab."):
+        if len(parts) < 4:
+            issues.append(("error",
+                f"App ID '{app_id}' is incomplete for a GitHub/GitLab namespace "
+                "(expected at least 4 dot-separated components)"))
+            return issues
+
+        platform = parts[1]  # "github" or "gitlab"
+        username = parts[2]
+        expected_prefix = f"https://{platform}.com/{username}/"
+
+        modules = manifest.get("modules", [])
+        first_module = next((m for m in modules if isinstance(m, dict)), None)
+        if first_module is None:
+            return issues
+
+        source_urls = [
+            s.get("url", "")
+            for s in first_module.get("sources", [])
+            if isinstance(s, dict) and s.get("url")
+        ]
+
+        if not source_urls:
+            issues.append(("warning",
+                f"App ID '{app_id}' claims {platform}.com/{username} namespace "
+                "but the main module has no source URLs — cannot verify ownership automatically"))
+            return issues
+
+        if not any(u.startswith(expected_prefix) for u in source_urls):
+            issues.append(("error",
+                f"App ID '{app_id}' claims {platform}.com/{username} namespace "
+                f"but no source URL in the main module starts with '{expected_prefix}'. "
+                "See docs/POLICY.md#app-id-verification"))
+
+    elif any(app_id.startswith(p) for p in KNOWN_ORG_NAMESPACES):
+        issues.append(("warning",
+            f"App ID '{app_id}' uses a known organization namespace — "
+            "explicit written approval from a Flatforge maintainer is required before this submission can be accepted"))
+
+    else:
+        issues.append(("warning",
+            f"App ID '{app_id}' uses a custom domain namespace — "
+            "a maintainer will verify domain ownership before merging; "
+            "add a DNS TXT record or /.well-known/flatforge-verify file and state the method in your PR "
+            "(see docs/POLICY.md#app-id-verification)"))
+
+    return issues
 
 
 # ---------------------------------------------------------------------------
@@ -391,6 +460,9 @@ def main() -> None:
     except Exception as exc:
         print(f"::error file={manifest_path}::Failed to parse manifest: {exc}")
         sys.exit(1)
+
+    for level, msg in check_app_id_namespace(manifest):
+        report(level, msg)
 
     for module in collect_modules(manifest):
         for source in module.get("sources", []):

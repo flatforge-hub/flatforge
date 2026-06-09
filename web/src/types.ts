@@ -11,6 +11,7 @@ export interface App {
   screenshots: string[]
   categories: string[]
   ai_tools_used?: string
+  status?: string
   version?: string
   release_date?: string
 }

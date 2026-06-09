@@ -42,6 +42,45 @@ corrected version).
 Maintainers who repeatedly submit infringing applications will have their
 access revoked.
 
+## Unauthorized submissions
+
+If someone submitted your application to Flatforge without your knowledge or consent,
+you can request removal or a hold pending discussion. This process is separate from
+copyright infringement — it covers cases where the packaging itself was not authorised
+by the original developer, regardless of whether the source licence technically permits it.
+
+### Proving authorship
+
+Provide one of the following to establish that you control the source repository:
+
+- Push a file named `flatforge-claim.txt` to the root of the source repository containing
+  your GitHub username and the App ID (e.g. `github=yourusername app=io.github.yourname.AppName`).
+  You may remove the file once the claim is resolved.
+- Open a GitHub issue in the source repository from your own account stating that you did
+  not authorise the Flatforge submission.
+
+### Submitting a claim
+
+Send an email to **evtcsuha5@mozmail.com** with:
+
+1. Your name and GitHub username.
+2. The App ID (e.g. `io.github.username.AppName`).
+3. Evidence of authorship (link to the `flatforge-claim.txt` file, or the GitHub issue you opened).
+4. A statement that you did not authorise the submission.
+
+### Our response
+
+On receipt of a complete claim we will:
+
+1. Put the application on hold within **7 days** — it will not be distributed while the
+   claim is open.
+2. Contact the submitter and give them **14 days** to provide counter-evidence or written
+   authorisation from you.
+3. Remove the application if no counter-evidence is provided or if your authorship is confirmed.
+
+If both parties agree, the submission may instead be transferred to you or relabelled as
+an unofficial community package — at your discretion.
+
 ## Note on jurisdiction
 
 Flatforge is operated from the European Union. While this process is modelled

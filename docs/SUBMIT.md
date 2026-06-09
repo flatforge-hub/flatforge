@@ -10,6 +10,14 @@ flatforge-hub/org.example.MyApp   ← per-app repo, created after acceptance
 New submissions go into this repo via the `new-sub` orphan branch. After
 acceptance, your app gets its own repository where ongoing maintenance happens.
 
+## Before you open a PR
+
+- **One app per PR** — each submission PR must contain exactly one application.
+- **Submission limit** — your GitHub account may have at most 2 open submission
+  PRs at a time. A third PR will be closed automatically without review.
+- **App ID** — you must own or control the namespace in your App ID before submitting.
+  See [App ID](#app-id) below and [POLICY.md — App ID verification](POLICY.md#app-id-verification).
+
 ## Submitting a new app
 
 ```bash
@@ -24,6 +32,20 @@ git push origin org.example.MyApp
 ```
 
 Your PR must target **`new-sub`**, not `main`.
+
+## App ID
+
+Your App ID must be in reverse-DNS format and reflect a namespace you own or control.
+
+| ID format | Requirement |
+|---|---|
+| `io.github.USERNAME.AppName` | Source URL in manifest must be under `github.com/USERNAME/` — CI verifies this automatically |
+| `io.gitlab.USERNAME.AppName` | Source URL must be under `gitlab.com/USERNAME/` — CI verifies this automatically |
+| `com.example.AppName` | Add a DNS TXT record `_flatforge.example.com TXT "github=USERNAME"` or a file at `https://example.com/.well-known/flatforge-verify` containing `github=USERNAME`; state the method in your PR description |
+| `org.gnome.*`, `org.kde.*`, etc. | Contact a Flatforge maintainer for written approval before submitting |
+
+See [POLICY.md — App ID verification](POLICY.md#app-id-verification) for the full rules,
+including namespace squatting policy.
 
 ## Required files
 
@@ -54,6 +76,7 @@ screenshots:
 categories:
   - Utility                    # see specifications.freedesktop.org/menu-spec
 ai_tools_used: "Claude Code"   # optional; omit if no AI tools used
+status: unmaintained           # optional; set when the app is no longer maintained
 ```
 
 `version` and `release_date` are read automatically from the `<releases>` element
@@ -98,6 +121,13 @@ python .github/scripts/check-sources.py \
 - No malware, spyware, or adware
 - Name, icon, and description do not impersonate or imply affiliation with another project;
   unofficial wrappers must say so explicitly (e.g. "Unofficial …")
+
+## Review timeline
+
+Review is done on a volunteer basis. There is no guaranteed timeline; a submission
+may take weeks or months and may require several rounds of back-and-forth with the
+submitter. Expedited review cannot be demanded. A PR that receives no activity from
+the submitter's side for 90 days will be closed as stale.
 
 ## After acceptance
 

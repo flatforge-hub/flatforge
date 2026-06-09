@@ -7,6 +7,41 @@ on:
       - "apps/**"
 
 jobs:
+  # ── Submission rate limit ─────────────────────────────────────────────────
+  check-limit:
+    name: Submission rate limit
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Count open submission PRs from this author
+        id: count
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          count=$(gh pr list \
+            --repo "${{ github.repository }}" \
+            --base new-sub \
+            --state open \
+            --author "${{ github.event.pull_request.user.login }}" \
+            --json number \
+            --jq 'length')
+          echo "open_count=$count" >> "$GITHUB_OUTPUT"
+          echo "${{ github.event.pull_request.user.login }} has $count open submission PR(s)"
+
+      - name: Close PR if limit exceeded
+        if: ${{ fromJSON(steps.count.outputs.open_count) > 2 }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          gh pr comment "$PR_NUMBER" \
+            --repo "${{ github.repository }}" \
+            --body "**Submission limit exceeded.** Your account already has 2 or more open submission PRs. Please wait for those to be reviewed or close them before opening a new one. See [POLICY.md](docs/POLICY.md#submission-limits) for details."
+          gh pr close "$PR_NUMBER" \
+            --repo "${{ github.repository }}"
+          exit 1
+
   # ── Detect which apps changed ─────────────────────────────────────────────
   detect:
     name: Detect changed apps
