@@ -101,3 +101,4 @@ Violations of this policy (post-merge) will result in:
 We do not have the resources to audit every application continuously.
 Security issues should be reported via `SECURITY.md`.
 Copyright infringement claims should be submitted per `COPYRIGHT.md`.
+Terms of use and liability disclaimer are in `TERMS.md`.

@@ -6,6 +6,7 @@ import AppDetail from './pages/AppDetail'
 import Submit from './pages/Submit'
 import About from './pages/About'
 import Privacy from './pages/Privacy'
+import Terms from './pages/Terms'
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
             <Route path="/submit" element={<Submit />} />
             <Route path="/about" element={<About />} />
             <Route path="/privacy" element={<Privacy />} />
+            <Route path="/terms" element={<Terms />} />
           </Routes>
         </main>
         <Footer />
