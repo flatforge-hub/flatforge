@@ -1,0 +1,7 @@
+# Flatpak builder manifest changes require core team review.
+# Replace APP_ID with the actual app ID (e.g. org.example.MyApp).
+# metadata.yaml and *.metainfo.xml are intentionally omitted — they auto-merge
+# after CI passes (see branch protection rules).
+
+APP_ID.json    @flatforge-hub/core
+APP_ID.yaml    @flatforge-hub/core

@@ -1,0 +1,12 @@
+name: Flatpak CI/CD
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  check:
+    uses: flatforge-hub/.github/.github/workflows/check-app.yml@main
+    secrets: inherit

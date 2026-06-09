@@ -6,8 +6,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Flatforge (`hub-meta` repo) is the infrastructure for a Flatpak app repository for
 the Linux desktop: a Docker Compose stack (nginx + OSTree repo manager) plus a
-React/Vite web frontend that lists submitted apps. App submissions themselves live
-in a separate repo, `flatforge/hub-apps`, and are mirrored locally under `apps/`.
+React/Vite web frontend that lists submitted apps.
+
+App submissions arrive via pull requests against the `new-sub` orphan branch in
+this repo (files land under `apps/<AppID>/`). After acceptance, each app gets its
+own repository at `flatforge-hub/<AppID>`; the `apps/` directory here retains the
+accepted copies for the web listing.
 
 ## Architecture
 
@@ -36,11 +40,16 @@ Three independently-built pieces wired together by `docker-compose.yml`:
 
 ### Data flow for a new app submission
 
-`hub-apps` PR → CI builds + lints the manifest and runs the source-compliance
-check → on merge to `main`, CI builds the Flatpak, rsyncs the OSTree build repo
-to the VPS, and runs `repo-manager export-app <AppID> <build-dir>` over SSH,
-which pulls the refs into the main repo, GPG-signs them, and regenerates the
-summary. Separately, `apps/<AppID>/metadata.yaml` feeds the web listing via
+PR against `new-sub` → CI runs `check-sources` + build + AppStream validation →
+core maintainer reviews → on acceptance, maintainer creates `flatforge-hub/<AppID>`
+from the org template, copies the files in, and adds the app maintainer. The
+submission branch is then deleted from this repo.
+
+For accepted apps, the per-app repo's CI handles ongoing builds and deploy: on
+push to `main`, CI builds the Flatpak, rsyncs the OSTree build repo to the VPS,
+and runs `repo-manager export-app <AppID> <build-dir>` over SSH. The per-app
+CI calls the reusable workflow at `flatforge-hub/.github`. Separately,
+`apps/<AppID>/metadata.yaml` (kept in sync manually) feeds the web listing via
 `generate-app-data.cjs`.
 
 ## Commands
@@ -90,9 +99,10 @@ buildsystems with no compile step. Edit `OSI_APPROVED`, `BINARY_*` constants, or
   privilege (broad `--filesystem=host`, `--talk-name=*`, etc. are essentially
   never accepted) — keep this in mind when touching `check-sources.py` or any
   manifest-validation logic, since it encodes these policies.
-- **CI deploy** relies on three GitHub secrets: `SSH_KEY`, `SSH_HOST` (supports
-  `host:port`), `SSH_USER`. The deploy step SSHes into the VPS and shells out to
-  `docker compose run repo-manager export-app`.
+- **CI deploy** lives in per-app repos (not here). It relies on three GitHub
+  secrets: `SSH_KEY`, `SSH_HOST` (supports `host:port`), `SSH_USER`. The deploy
+  step SSHes into the VPS and shells out to `docker compose run repo-manager
+  export-app`. See `templates/org-github-repo/` for the reusable workflow.
 - All repo-manager commands are environment-driven (`REPO_PATH`, `GNUPGHOME`,
   `GPG_KEY_ID`, `REPO_DEFAULT_BRANCH`, `DOMAIN`) — see `docker-compose.yml` for
   how `.env` values are threaded through.

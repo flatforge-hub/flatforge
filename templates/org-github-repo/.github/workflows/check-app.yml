@@ -1,0 +1,220 @@
+# Reusable CI/CD workflow for Flatforge per-app repos.
+# Place this file at:
+#   flatforge-hub/.github/.github/workflows/check-app.yml
+#
+# Each per-app repo calls it with a single line:
+#   uses: flatforge-hub/.github/.github/workflows/check-app.yml@main
+#   secrets: inherit
+#
+# Required secrets (set on each per-app repo or at org level):
+#   SSH_KEY, SSH_HOST, SSH_USER  — only used on push to main (deploy job)
+
+name: Flatpak CI/CD (reusable)
+
+on:
+  workflow_call:
+    secrets:
+      SSH_KEY:
+        required: false
+      SSH_HOST:
+        required: false
+      SSH_USER:
+        required: false
+
+jobs:
+  # ── Detect which manifest changed ─────────────────────────────────────────
+  detect:
+    name: Detect changed manifest
+    runs-on: ubuntu-latest
+    outputs:
+      changed_manifests: ${{ steps.diff.outputs.manifests }}
+      has_changes: ${{ steps.diff.outputs.has_changes }}
+      app_id: ${{ steps.app_id.outputs.value }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Determine App ID from repo name
+        id: app_id
+        run: echo "value=${{ github.event.repository.name }}" >> "$GITHUB_OUTPUT"
+
+      - name: Find changed manifests
+        id: diff
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BASE=${{ github.event.pull_request.base.sha }}
+            HEAD=${{ github.event.pull_request.head.sha }}
+          else
+            BASE=${{ github.event.before }}
+            HEAD=${{ github.sha }}
+          fi
+
+          # Manifests at repo root only (excludes metadata.yaml / metainfo)
+          MANIFESTS=$(git diff --name-only "$BASE" "$HEAD" \
+            | grep -E '^[^/]+\.(json|yaml|yml)$' \
+            | grep -v '^metadata\.yaml$' \
+            | head -5 \
+            || true)
+
+          if [ -z "$MANIFESTS" ]; then
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+            echo "manifests=[]" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+            JSON=$(echo "$MANIFESTS" | jq -Rsc 'split("\n") | map(select(. != ""))')
+            echo "manifests=$JSON" >> "$GITHUB_OUTPUT"
+          fi
+
+  # ── Source compliance check ───────────────────────────────────────────────
+  check-sources:
+    name: Check sources ${{ matrix.manifest }}
+    needs: detect
+    if: needs.detect.outputs.has_changes == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        manifest: ${{ fromJson(needs.detect.outputs.changed_manifests) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch check-sources.py from hub-meta
+        uses: actions/checkout@v4
+        with:
+          repository: flatforge-hub/flatforge
+          path: _hub-meta
+          sparse-checkout: |
+            .github/scripts/check-sources.py
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install pyyaml
+
+      - name: Run source compliance check
+        run: python _hub-meta/.github/scripts/check-sources.py "${{ matrix.manifest }}"
+
+  # ── Build and lint ─────────────────────────────────────────────────────────
+  build:
+    name: Build ${{ matrix.manifest }}
+    needs: [detect, check-sources]
+    if: needs.detect.outputs.has_changes == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        manifest: ${{ fromJson(needs.detect.outputs.changed_manifests) }}
+
+    container:
+      image: ghcr.io/flathub/flatpak-builder:latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Add Flathub remote (for SDK dependencies)
+        run: |
+          flatpak remote-add --if-not-exists flathub \
+            https://dl.flathub.org/repo/flathub.flatpakrepo
+
+      - name: Lint manifest
+        run: |
+          flatpak-builder-lint --exceptions manifest \
+            "${{ matrix.manifest }}" || true
+
+      - name: Build Flatpak
+        run: |
+          flatpak-builder \
+            --force-clean \
+            --sandbox \
+            --user \
+            --install-deps-from=flathub \
+            --repo=/tmp/build-repo \
+            --disable-rofiles-fuse \
+            /tmp/build-dir \
+            "${{ matrix.manifest }}"
+
+      - name: Validate AppStream metadata
+        run: |
+          METAINFO=$(find . -maxdepth 1 -name "*.metainfo.xml" | head -1 || true)
+          if [ -n "$METAINFO" ]; then
+            appstreamcli validate "$METAINFO" || true
+          else
+            echo "::warning::No metainfo.xml found"
+          fi
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ needs.detect.outputs.app_id }}-repo
+          path: /tmp/build-repo/
+          retention-days: 7
+
+  # ── Deploy on merge to main ───────────────────────────────────────────────
+  deploy:
+    name: Deploy ${{ needs.detect.outputs.app_id }}
+    needs: [detect, build]
+    if: |
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/main' &&
+      needs.detect.outputs.has_changes == 'true'
+    runs-on: ubuntu-latest
+
+    container:
+      image: ghcr.io/flathub/flatpak-builder:latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Add Flathub remote
+        run: |
+          flatpak remote-add --if-not-exists flathub \
+            https://dl.flathub.org/repo/flathub.flatpakrepo
+
+      - name: Build Flatpak (release)
+        run: |
+          MANIFEST=$(echo '${{ needs.detect.outputs.changed_manifests }}' \
+            | jq -r '.[0]')
+          flatpak-builder \
+            --force-clean \
+            --sandbox \
+            --user \
+            --install-deps-from=flathub \
+            --repo=/tmp/build-repo \
+            --disable-rofiles-fuse \
+            /tmp/build-dir \
+            "$MANIFEST"
+
+      - name: Upload build repo to VPS
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          APP_ID: ${{ needs.detect.outputs.app_id }}
+        run: |
+          SSH_ADDR="${SSH_HOST%%:*}"
+          SSH_PORT="${SSH_HOST##*:}"
+          if [ "$SSH_PORT" = "$SSH_ADDR" ]; then SSH_PORT=22; fi
+
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -p "$SSH_PORT" -H "$SSH_ADDR" >> ~/.ssh/known_hosts 2>/dev/null
+
+          rsync -avz --delete \
+            -e "ssh -i ~/.ssh/deploy_key -p $SSH_PORT -o StrictHostKeyChecking=no" \
+            /tmp/build-repo/ \
+            "$SSH_USER@$SSH_ADDR:/tmp/flatforge-incoming/$APP_ID/"
+
+          ssh -i ~/.ssh/deploy_key -p "$SSH_PORT" -o StrictHostKeyChecking=no \
+            "$SSH_USER@$SSH_ADDR" \
+            "cd /opt/docker/flatforge && \
+             docker compose run --rm repo-manager export-app \
+               '$APP_ID' \
+               '/tmp/flatforge-incoming/$APP_ID'"
+
+      - name: Clean up deploy key
+        if: always()
+        run: rm -f ~/.ssh/deploy_key

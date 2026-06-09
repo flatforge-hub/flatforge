@@ -1,11 +1,14 @@
-# App Submission / Update
+# App Submission
+
+> This PR should target the **`new-sub`** branch.
+> Updates to accepted apps go via the per-app repository, not here.
 
 ## Application
 
 - **App ID:** `org.example.MyApp`
 - **Name:**
 - **Version:**
-- **Type:** [ ] New app   [ ] Update   [ ] Metadata-only change
+- **Type:** [ ] New app   [ ] Metadata-only change (pre-acceptance revision)
 
 ---
 
