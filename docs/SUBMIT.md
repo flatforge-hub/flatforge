@@ -96,6 +96,8 @@ python .github/scripts/check-sources.py \
 - Minimal sandbox permissions — no unnecessary `finish-args`
 - App builds cleanly from the manifest
 - No malware, spyware, or adware
+- Name, icon, and description do not impersonate or imply affiliation with another project;
+  unofficial wrappers must say so explicitly (e.g. "Unofficial …")
 
 ## After acceptance
 

@@ -45,6 +45,32 @@ Applications with a filled `ai_tools_used` field receive an "AI" badge on their 
 - Applications with no genuine utility ("slop") — regardless of how they were built
 - Custom or unreviewed licences — use MIT, Apache-2.0, GPL, CC0, or another established licence instead
 
+## Trademarks and impersonation
+
+App IDs must match a domain or namespace the developer controls (see acceptance
+criteria above). Beyond that:
+
+- **Names** — the `name` field and AppStream `<name>` must not use a trademarked
+  name in a way that implies official affiliation unless the submitter is the
+  upstream developer or has written authorisation from the trademark holder.
+  Example: an app named "Firefox" or "Visual Studio Code" submitted by a third
+  party will be rejected.
+
+- **Unofficial wrappers and companions** — apps that wrap, extend, or companion
+  another project must clearly identify themselves as unofficial. The name or
+  summary must include a qualifier such as "Unofficial", "Third-party", or
+  "Community". Example: "Unofficial Discord Client" is acceptable; "Discord" is not.
+
+- **Icons** — app icons must be original or licensed for use. Reproducing a
+  trademarked icon (e.g. another project's logo) without authorisation is not
+  acceptable, even in modified form.
+
+- **Descriptions** — marketing language that implies endorsement or official
+  status from another project or organisation will be rejected.
+
+If in doubt, err on the side of being explicit about the app's independent
+status. Maintainers will flag ambiguous cases during review.
+
 ## Sandbox policy
 
 We review `finish-args` on every submission. The following require written justification:
