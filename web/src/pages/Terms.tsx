@@ -86,6 +86,23 @@ export default function Terms() {
         </ul>
       </section>
 
+      <section className="mb-10">
+        <h2 className="text-lg font-semibold text-zinc-200 mb-3">Service termination</h2>
+        <p className="text-zinc-400 leading-relaxed">
+          Flatforge may suspend or permanently discontinue the repository and all associated
+          services at any time, for any reason, without obligation to provide advance notice.
+        </p>
+        <p className="text-zinc-400 leading-relaxed mt-3">
+          Upon discontinuation, application distribution will cease. The repository contents
+          (manifests, metadata, source code) will remain accessible on GitHub for as long as
+          GitHub hosts them, subject to GitHub's own policies.
+        </p>
+        <p className="text-zinc-400 leading-relaxed mt-3">
+          Where reasonably practical, maintainers will provide advance notice of a planned
+          shutdown via the repository README and the Flatforge website.
+        </p>
+      </section>
+
       <section>
         <h2 className="text-lg font-semibold text-zinc-200 mb-3">Governing law</h2>
         <p className="text-zinc-400 leading-relaxed">

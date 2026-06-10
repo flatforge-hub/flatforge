@@ -32,6 +32,11 @@ export default function Footer() {
                    className="text-zinc-500 hover:text-zinc-300 transition-colors">Security</a>
               </li>
               <li>
+                <a href="https://github.com/flatforge-hub/flatforge/blob/main/docs/CODE_OF_CONDUCT.md"
+                   target="_blank" rel="noopener noreferrer"
+                   className="text-zinc-500 hover:text-zinc-300 transition-colors">Code of Conduct</a>
+              </li>
+              <li>
                 <a href="https://github.com/flatforge-hub"
                    target="_blank" rel="noopener noreferrer"
                    className="text-zinc-500 hover:text-zinc-300 transition-colors">GitHub</a>
