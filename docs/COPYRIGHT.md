@@ -25,11 +25,13 @@ your copyright, send a written notice to **evtcsuha5@mozmail.com** with:
 
 ## Our response
 
-On receipt of a complete notice we will:
+Flatforge is run by volunteers and these timeframes are not guaranteed deadlines —
+they describe what we aim for under normal circumstances. On receipt of a complete
+notice we will, without undue delay:
 
-1. Acknowledge within **7 days**.
+1. Acknowledge — typically within **7 days**.
 2. Investigate and, where the claim is substantiated, remove the application
-   from the repository within **14 days** of acknowledgement.
+   from the repository — typically within **14 days** of acknowledgement.
 3. Notify the app maintainer and give them an opportunity to respond or
    provide a counter-notice.
 
@@ -70,12 +72,13 @@ Send an email to **evtcsuha5@mozmail.com** with:
 
 ### Our response
 
-On receipt of a complete claim we will:
+As above, these timeframes are best-effort targets, not guaranteed deadlines. On
+receipt of a complete claim we will, without undue delay:
 
-1. Put the application on hold within **7 days** — it will not be distributed while the
-   claim is open.
-2. Contact the submitter and give them **14 days** to provide counter-evidence or written
-   authorisation from you.
+1. Put the application on hold — typically within **7 days** — it will not be
+   distributed while the claim is open.
+2. Contact the submitter and give them around **14 days** to provide counter-evidence
+   or written authorisation from you.
 3. Remove the application if no counter-evidence is provided or if your authorship is confirmed.
 
 If both parties agree, the submission may instead be transferred to you or relabelled as
