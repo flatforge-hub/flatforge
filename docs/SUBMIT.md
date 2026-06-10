@@ -17,6 +17,9 @@ acceptance, your app gets its own repository where ongoing maintenance happens.
   PRs at a time. A third PR will be closed automatically without review.
 - **App ID** — you must own or control the namespace in your App ID before submitting.
   See [App ID](#app-id) below and [POLICY.md — App ID verification](POLICY.md#app-id-verification).
+- **Questions first** — if your App ID needs maintainer approval (see the table below)
+  or you're unsure whether your app fits, open a GitHub issue with the `question`
+  label before opening a submission PR.
 
 ## Submitting a new app
 
@@ -77,6 +80,8 @@ categories:
   - Utility                    # see specifications.freedesktop.org/menu-spec
 ai_tools_used: "Claude Code"   # optional; omit if no AI tools used
 status: unmaintained           # optional; set when the app is no longer maintained
+data_collection: "Sends anonymous crash reports to sentry.io"  # required if the
+                                # app has network access and transmits user data
 ```
 
 `version` and `release_date` are read automatically from the `<releases>` element

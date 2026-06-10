@@ -388,6 +388,33 @@ def check_metadata(metadata_path: Path) -> list[Issue]:
 
 
 # ---------------------------------------------------------------------------
+# Data collection disclosure check
+# ---------------------------------------------------------------------------
+
+def check_data_collection_disclosure(manifest: dict, metadata_path: Path) -> list[Issue]:
+    """Warn if the app has network access but metadata.yaml has no data_collection field."""
+    finish_args = manifest.get("finish-args", [])
+    if "--share=network" not in finish_args:
+        return []
+
+    if not metadata_path.exists() or yaml is None:
+        return []
+
+    with metadata_path.open() as f:
+        data = yaml.safe_load(f) or {}
+
+    if not data.get("data_collection"):
+        return [(
+            "warning",
+            "App requests --share=network but metadata.yaml has no 'data_collection' "
+            "field — describe what user data, if any, is transmitted and where "
+            "(see docs/POLICY.md#data-collection-disclosure)",
+        )]
+
+    return []
+
+
+# ---------------------------------------------------------------------------
 # Manifest loading + module traversal
 # ---------------------------------------------------------------------------
 
@@ -462,6 +489,9 @@ def main() -> None:
         sys.exit(1)
 
     for level, msg in check_app_id_namespace(manifest):
+        report(level, msg)
+
+    for level, msg in check_data_collection_disclosure(manifest, metadata_path):
         report(level, msg)
 
     for module in collect_modules(manifest):

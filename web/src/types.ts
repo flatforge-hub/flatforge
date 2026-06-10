@@ -12,6 +12,7 @@ export interface App {
   categories: string[]
   ai_tools_used?: string
   status?: string
+  data_collection?: string
   version?: string
   release_date?: string
 }

@@ -92,6 +92,20 @@ Applications with a filled `ai_tools_used` field receive an "AI" badge on their 
 - Applications with misleading App IDs (impersonating other projects)
 - Applications with no genuine utility ("slop") — regardless of how they were built
 - Custom or unreviewed licences — use MIT, Apache-2.0, GPL, CC0, or another established licence instead
+- Applications whose primary purpose is to display pornographic or sexually explicit content
+- Real-money gambling applications
+- Content that is illegal under EU or Czech law
+
+## Data collection disclosure
+
+If an application requests `--share=network` and transmits user data — telemetry,
+crash reports, analytics, account sync, ads, etc. — this must be disclosed in the
+`data_collection` field of `metadata.yaml` and briefly in the AppStream description.
+
+This is about transparency, not prohibition. Flatforge does not ban telemetry, but
+users must be able to find out about it before installing. Undisclosed data
+collection discovered after acceptance will be treated as a policy violation (see
+[Enforcement](#enforcement)).
 
 ## Editorial discretion
 
@@ -222,3 +236,10 @@ We do not have the resources to audit every application continuously.
 Security issues should be reported via `SECURITY.md`.
 Copyright infringement claims should be submitted per `COPYRIGHT.md`.
 Terms of use and liability disclaimer are in `TERMS.md`.
+Community behaviour is governed by `CODE_OF_CONDUCT.md`.
+
+## Questions and pre-submission approval
+
+For anything not covered by this policy — including namespace-approval requests
+for [other namespaces](#other-namespaces) — open a GitHub issue with the `question`
+label in `flatforge-hub/flatforge` before submitting a PR.
