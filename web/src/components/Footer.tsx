@@ -2,49 +2,49 @@ import { Link } from 'react-router-dom'
 
 export default function Footer() {
   return (
-    <footer className="border-t border-zinc-800 bg-zinc-950 mt-16">
+    <footer className="border-t border-zinc-200 bg-zinc-50 mt-16 dark:border-zinc-800 dark:bg-zinc-950">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 text-sm">
           <div>
-            <p className="font-semibold text-zinc-100 mb-3">Flatforge</p>
-            <p className="text-zinc-500 leading-relaxed">
+            <p className="font-semibold text-zinc-900 dark:text-zinc-100 mb-3">Flatforge</p>
+            <p className="text-zinc-600 dark:text-zinc-500 leading-relaxed">
               A Flatpak repository for open-source Linux applications.
             </p>
           </div>
           <div>
-            <p className="font-semibold text-zinc-400 mb-3">Links</p>
+            <p className="font-semibold text-zinc-700 dark:text-zinc-400 mb-3">Links</p>
             <ul className="space-y-2">
-              <li><Link to="/" className="text-zinc-500 hover:text-zinc-300 transition-colors">Browse Apps</Link></li>
-              <li><Link to="/submit" className="text-zinc-500 hover:text-zinc-300 transition-colors">Submit an App</Link></li>
-              <li><Link to="/about" className="text-zinc-500 hover:text-zinc-300 transition-colors">About</Link></li>
+              <li><Link to="/" className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-zinc-300 transition-colors">Browse Apps</Link></li>
+              <li><Link to="/submit" className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-zinc-300 transition-colors">Submit an App</Link></li>
+              <li><Link to="/about" className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-zinc-300 transition-colors">About</Link></li>
             </ul>
           </div>
           <div>
-            <p className="font-semibold text-zinc-400 mb-3">Documentation</p>
+            <p className="font-semibold text-zinc-700 dark:text-zinc-400 mb-3">Documentation</p>
             <ul className="space-y-2">
-              <li><Link to="/policy" className="text-zinc-500 hover:text-zinc-300 transition-colors">Policy</Link></li>
-              <li><Link to="/privacy" className="text-zinc-500 hover:text-zinc-300 transition-colors">Privacy</Link></li>
-              <li><Link to="/terms" className="text-zinc-500 hover:text-zinc-300 transition-colors">Terms</Link></li>
-              <li><Link to="/copyright" className="text-zinc-500 hover:text-zinc-300 transition-colors">Copyright</Link></li>
+              <li><Link to="/policy" className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-zinc-300 transition-colors">Policy</Link></li>
+              <li><Link to="/privacy" className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-zinc-300 transition-colors">Privacy</Link></li>
+              <li><Link to="/terms" className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-zinc-300 transition-colors">Terms</Link></li>
+              <li><Link to="/copyright" className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-zinc-300 transition-colors">Copyright</Link></li>
               <li>
                 <a href="https://github.com/flatforge-hub/flatforge/blob/main/docs/SECURITY.md"
                    target="_blank" rel="noopener noreferrer"
-                   className="text-zinc-500 hover:text-zinc-300 transition-colors">Security</a>
+                   className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-zinc-300 transition-colors">Security</a>
               </li>
               <li>
                 <a href="https://github.com/flatforge-hub/flatforge/blob/main/docs/CODE_OF_CONDUCT.md"
                    target="_blank" rel="noopener noreferrer"
-                   className="text-zinc-500 hover:text-zinc-300 transition-colors">Code of Conduct</a>
+                   className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-zinc-300 transition-colors">Code of Conduct</a>
               </li>
               <li>
                 <a href="https://github.com/flatforge-hub"
                    target="_blank" rel="noopener noreferrer"
-                   className="text-zinc-500 hover:text-zinc-300 transition-colors">GitHub</a>
+                   className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-zinc-300 transition-colors">GitHub</a>
               </li>
             </ul>
           </div>
         </div>
-        <div className="mt-8 pt-6 border-t border-zinc-900 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-zinc-600">
+        <div className="mt-8 pt-6 border-t border-zinc-200 dark:border-zinc-900 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-zinc-500 dark:text-zinc-600">
           <span>Flatforge: open source infrastructure for open source apps</span>
         </div>
       </div>

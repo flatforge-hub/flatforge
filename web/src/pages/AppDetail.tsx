@@ -20,8 +20,9 @@ function CopyButton({ text }: { text: string }) {
     <button
       onClick={copy}
       className="absolute top-3 right-3 px-2.5 py-1 rounded-md text-xs
-                 bg-zinc-800 hover:bg-zinc-700 text-zinc-400 hover:text-zinc-200
-                 transition-colors border border-zinc-700"
+                 bg-zinc-100 hover:bg-zinc-200 text-zinc-600 hover:text-zinc-900
+                 transition-colors border border-zinc-300
+                 dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 dark:border-zinc-700"
     >
       {copied ? 'Copied!' : 'Copy'}
     </button>
@@ -38,7 +39,7 @@ export default function AppDetail() {
     return (
       <div className="mx-auto max-w-2xl px-4 py-24 text-center">
         <p className="text-4xl mb-4">404</p>
-        <p className="text-zinc-400 mb-6">App <code className="text-forge-400">{id}</code> not found.</p>
+        <p className="text-zinc-600 dark:text-zinc-400 mb-6">App <code className="text-forge-600 dark:text-forge-400">{id}</code> not found.</p>
         <Link to="/" className="btn-primary">Browse all apps</Link>
       </div>
     )
@@ -53,7 +54,7 @@ export default function AppDetail() {
   return (
     <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-10">
       {/* Back */}
-      <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-300 transition-colors mb-8">
+      <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-300 transition-colors mb-8">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
           fill="none" stroke="currentColor" strokeWidth="2">
           <path d="M19 12H5M12 5l-7 7 7 7"/>
@@ -66,28 +67,28 @@ export default function AppDetail() {
         <div className="lg:col-span-2 space-y-8">
           {/* App header */}
           <div className="flex items-start gap-5">
-            <div className="shrink-0 w-20 h-20 rounded-2xl overflow-hidden bg-zinc-800 flex items-center justify-center">
+            <div className="shrink-0 w-20 h-20 rounded-2xl overflow-hidden bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
               {app.icon ? (
                 <img src={app.icon} alt={app.name} className="w-full h-full object-cover" />
               ) : (
                 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24"
-                  fill="none" stroke="currentColor" strokeWidth="1" className="text-zinc-600">
+                  fill="none" stroke="currentColor" strokeWidth="1" className="text-zinc-400 dark:text-zinc-600">
                   <rect x="3" y="3" width="18" height="18" rx="4"/>
                   <path d="M9 12h6M12 9v6"/>
                 </svg>
               )}
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-zinc-100">{app.name}</h1>
-              <p className="text-zinc-400 mt-0.5">{app.developer}</p>
+              <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">{app.name}</h1>
+              <p className="text-zinc-600 dark:text-zinc-400 mt-0.5">{app.developer}</p>
               <div className="flex flex-wrap gap-2 mt-3">
                 {app.categories.map((cat) => (
-                  <span key={cat} className="badge bg-zinc-800 text-zinc-400 border border-zinc-700">
+                  <span key={cat} className="badge bg-zinc-100 text-zinc-600 border border-zinc-300 dark:bg-zinc-800 dark:text-zinc-400 dark:border-zinc-700">
                     {cat}
                   </span>
                 ))}
                 {app.ai_tools_used && (
-                  <span className="badge bg-forge-900/50 text-forge-300 border border-forge-800">
+                  <span className="badge bg-forge-100 text-forge-700 border border-forge-300 dark:bg-forge-900/50 dark:text-forge-300 dark:border-forge-800">
                     Built with AI
                   </span>
                 )}
@@ -98,7 +99,7 @@ export default function AppDetail() {
           {/* Screenshots */}
           {app.screenshots.length > 0 && (
             <div>
-              <div className="rounded-xl overflow-hidden bg-zinc-900 border border-zinc-800 aspect-video">
+              <div className="rounded-xl overflow-hidden bg-zinc-100 border border-zinc-200 dark:bg-zinc-900 dark:border-zinc-800 aspect-video">
                 <img
                   src={app.screenshots[activeScreenshot]}
                   alt={`Screenshot ${activeScreenshot + 1}`}
@@ -112,7 +113,7 @@ export default function AppDetail() {
                       key={i}
                       onClick={() => setActiveScreenshot(i)}
                       className={`w-16 h-10 rounded-lg overflow-hidden border-2 transition-colors ${
-                        i === activeScreenshot ? 'border-forge-500' : 'border-zinc-800 hover:border-zinc-600'
+                        i === activeScreenshot ? 'border-forge-500' : 'border-zinc-200 hover:border-zinc-400 dark:border-zinc-800 dark:hover:border-zinc-600'
                       }`}
                     >
                       <img src={src} alt="" className="w-full h-full object-cover" />
@@ -125,8 +126,8 @@ export default function AppDetail() {
 
           {/* Description */}
           <div>
-            <h2 className="text-lg font-semibold text-zinc-200 mb-3">About</h2>
-            <div className="prose prose-sm prose-invert max-w-none text-zinc-400 leading-relaxed">
+            <h2 className="text-lg font-semibold text-zinc-800 dark:text-zinc-200 mb-3">About</h2>
+            <div className="prose prose-sm dark:prose-invert max-w-none text-zinc-600 dark:text-zinc-400 leading-relaxed">
               <ReactMarkdown remarkPlugins={[remarkGfm]}>
                 {app.description}
               </ReactMarkdown>
@@ -135,10 +136,10 @@ export default function AppDetail() {
 
           {/* AI disclosure */}
           {app.ai_tools_used && (
-            <div className="rounded-xl border border-forge-800 bg-forge-950/30 p-4">
-              <p className="text-sm font-medium text-forge-300 mb-1">AI-assisted development</p>
-              <p className="text-sm text-zinc-400">
-                This application was built using: <span className="text-zinc-300">{app.ai_tools_used}</span>
+            <div className="rounded-xl border border-forge-300 bg-forge-50 dark:border-forge-800 dark:bg-forge-950/30 p-4">
+              <p className="text-sm font-medium text-forge-700 dark:text-forge-300 mb-1">AI-assisted development</p>
+              <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                This application was built using: <span className="text-zinc-800 dark:text-zinc-300">{app.ai_tools_used}</span>
               </p>
             </div>
           )}
@@ -148,20 +149,20 @@ export default function AppDetail() {
         <div className="space-y-6">
           {/* Install */}
           <div className="card p-5">
-            <h2 className="font-semibold text-zinc-200 mb-4">Install</h2>
+            <h2 className="font-semibold text-zinc-800 dark:text-zinc-200 mb-4">Install</h2>
             <div className="relative">
               <pre className="code-block text-xs leading-relaxed whitespace-pre">{installCmd}</pre>
               <CopyButton text={installCmd} />
             </div>
-            <p className="text-xs text-zinc-600 mt-3">
+            <p className="text-xs text-zinc-500 dark:text-zinc-600 mt-3">
               Requires <a href="https://flatpak.org" target="_blank" rel="noopener noreferrer"
-                className="text-zinc-500 hover:text-zinc-400">Flatpak</a> to be installed.
+                className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-zinc-400">Flatpak</a> to be installed.
             </p>
           </div>
 
           {/* Metadata */}
           <div className="card p-5 space-y-3 text-sm">
-            <h2 className="font-semibold text-zinc-200 mb-1">Details</h2>
+            <h2 className="font-semibold text-zinc-800 dark:text-zinc-200 mb-1">Details</h2>
             <MetaRow label="Version" value={app.version} />
             <MetaRow label="Released" value={app.release_date} />
             <MetaRow label="License" value={app.license} />
@@ -170,7 +171,7 @@ export default function AppDetail() {
               <div className="flex justify-between gap-4">
                 <span className="text-zinc-500 shrink-0">Website</span>
                 <a href={app.website} target="_blank" rel="noopener noreferrer"
-                   className="text-forge-400 hover:text-forge-300 truncate transition-colors">
+                   className="text-forge-600 hover:text-forge-500 dark:text-forge-400 dark:hover:text-forge-300 truncate transition-colors">
                   {app.website.replace(/^https?:\/\//, '')}
                 </a>
               </div>
@@ -187,7 +188,7 @@ function MetaRow({ label, value, mono }: { label: string; value?: string; mono?:
   return (
     <div className="flex justify-between gap-4">
       <span className="text-zinc-500 shrink-0">{label}</span>
-      <span className={`text-zinc-300 truncate text-right ${mono ? 'font-mono text-xs' : ''}`}>
+      <span className={`text-zinc-700 dark:text-zinc-300 truncate text-right ${mono ? 'font-mono text-xs' : ''}`}>
         {value}
       </span>
     </div>
