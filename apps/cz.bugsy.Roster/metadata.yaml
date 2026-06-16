@@ -1,0 +1,29 @@
+id: cz.bugsy.roster
+name: Roster
+summary: HTTP client for API testing
+description: |
+  Roster is a modern HTTP client for testing and debugging REST APIs.
+  It provides a clean, GNOME-native interface for making HTTP requests
+  and inspecting responses.
+
+  **Features:**
+  - Send HTTP requests with custom headers, body, and authentication
+  - Import APIs from OpenAPI/Swagger (2.0 + 3.x) and WSDL/SOAP
+  - Import requests from `.http` files
+  - Environment variables for reusable values across requests
+  - Pre/post-request scripts
+  - Request history
+  - Responsive layout that adapts to narrow windows
+developer: Pavel Baksy
+website: https://git.bugsy.cz/beval/roster
+license: GPL-3.0-or-later
+icon: https://git.bugsy.cz/beval/roster/raw/branch/master/data/icons/hicolor/scalable/apps/cz.bugsy.roster.svg
+screenshots:
+  - https://git.bugsy.cz/beval/roster/raw/branch/master/screenshots/main.png
+  - https://git.bugsy.cz/beval/roster/raw/branch/master/screenshots/variables.png
+  - https://git.bugsy.cz/beval/roster/raw/branch/master/screenshots/history.png
+  - https://git.bugsy.cz/beval/roster/raw/branch/master/screenshots/load_openapi.png
+categories:
+  - Development
+  - Network
+ai_tools_used: "Claude Code"

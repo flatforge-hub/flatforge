@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>cz.bugsy.roster</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+
+  <name>Roster</name>
+  <summary>HTTP client for API testing</summary>
+  <description>
+    <p>Roster is a modern HTTP client for testing and debugging REST APIs. It provides a clean, GNOME-native interface for making HTTP requests and inspecting responses.</p>
+  </description>
+
+  <developer id="cz.bugsy">
+    <name>Pavel Baksy</name>
+  </developer>
+
+  <url type="homepage">https://git.bugsy.cz/beval/roster</url>
+  <url type="vcs-browser">https://git.bugsy.cz/beval/roster</url>
+  <url type="bugtracker">https://git.bugsy.cz/beval/roster/issues</url>
+
+  <translation type="gettext">roster</translation>
+  <launchable type="desktop-id">cz.bugsy.roster.desktop</launchable>
+  <content_rating type="oars-1.1" />
+
+  <branding>
+    <color type="primary" scheme_preference="light">#8b9dbc</color>
+    <color type="primary" scheme_preference="dark">#173c7a</color>
+  </branding>
+
+  <screenshots>
+    <screenshot type="default">
+      <image>https://git.bugsy.cz/beval/roster/raw/branch/master/screenshots/main.png</image>
+      <caption>Main application window with HTTP request and response</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://git.bugsy.cz/beval/roster/raw/branch/master/screenshots/variables.png</image>
+      <caption>Environment variables configuration</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://git.bugsy.cz/beval/roster/raw/branch/master/screenshots/history.png</image>
+      <caption>Request history panel</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://git.bugsy.cz/beval/roster/raw/branch/master/screenshots/load_openapi.png</image>
+      <caption>OpenAPI/Swagger import dialog with loaded operations</caption>
+    </screenshot>
+  </screenshots>
+
+  <releases>
+    <release version="0.11.0" date="2026-05-27">
+      <description translate="no">
+        <ul>
+          <li>Each request is now stored as a separate JSON file, making it easy to share and version-control API collections with Git</li>
+          <li>Existing data is migrated automatically on first launch; the original file is kept as a backup</li>
+          <li>New Backup section in Preferences: export project data to a folder, manually or automatically after every save</li>
+          <li>Method prefix (GET, POST, …) is no longer shown in request names — the colored chip already carries that information</li>
+          <li>Imported request names from OpenAPI and .http files no longer include the method prefix</li>
+          <li>Request names may now contain / and :</li>
+        </ul>
+      </description>
+    </release>
+    <release version="0.10.0" date="2026-05-21">
+      <description translate="no">
+        <ul>
+          <li>Responsive layout: sidebar collapses to an overlay panel on narrow windows</li>
+          <li>Narrow mode: single-panel view with Request/Response toggle buttons when sidebar is hidden</li>
+          <li>Adaptive request panel: Headers/Body/Scripts tabs stack vertically when the panel is narrow, with a hard minimum width</li>
+          <li>Import requests from .http files</li>
+          <li>Sidebar hamburger menu consolidating all actions (Add Project, Import, Preferences, Keyboard Shortcuts, About)</li>
+          <li>Method chips (GET/POST/PUT/DELETE color badges) in sidebar request list</li>
+          <li>Fix header bar clipping and window controls placement on narrow windows</li>
+          <li>Set minimum window width to prevent layout overflow</li>
+        </ul>
+      </description>
+    </release>
+    <release version="0.9.3" date="2026-05-19">
+      <description translate="no">
+        <ul>
+          <li>Fix WSDL import: generated SOAP body now correctly includes wrapper elements and proper namespace prefixes for each type (fixes WCF/DataContract services)</li>
+          <li>Fix window controls disappearing when moved to left side via GNOME Tweaks</li>
+        </ul>
+      </description>
+    </release>
+    <release version="0.9.1" date="2026-05-12">
+      <description translate="no">
+        <ul>
+          <li>Add OpenAPI/Swagger import (2.0 + 3.x) with JSON body templates</li>
+          <li>Update to GNOME Platform 50</li>
+        </ul>
+      </description>
+    </release>
+    <release version="0.9.0" date="2026-05-12">
+      <description translate="no">
+        <ul>
+          <li>Add WSDL import for SOAP services</li>
+        </ul>
+      </description>
+    </release>
+    <release version="0.8.0" date="2026-01-15" />
+    <release version="0.7.0" date="2026-01-14" />
+    <release version="0.6.0" date="2026-01-10" />
+    <release version="0.5.0" date="2026-01-08" />
+    <release version="0.4.0" date="2026-01-05" />
+    <release version="0.2.0" date="2025-12-30" />
+  </releases>
+
+</component>
