@@ -1,0 +1,77 @@
+name: Check abandoned apps
+
+on:
+  schedule:
+    - cron: '0 9 1 * *'  # Monthly on the 1st at 09:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Open maintenance-check issues for stale apps
+        # Requires a fine-grained PAT with issues:write across the flatforge-hub org,
+        # stored as org secret FLATFORGE_BOT_TOKEN.
+        env:
+          GH_TOKEN: ${{ secrets.FLATFORGE_BOT_TOKEN }}
+          ORG: flatforge-hub
+          STALE_DAYS: 365
+          GRACE_DAYS: 30
+        run: |
+          set -euo pipefail
+          now=$(date +%s)
+
+          for app_dir in apps/*/; do
+            app_id=$(basename "$app_dir")
+            [[ "$app_id" == "org.example.SampleApp" ]] && continue
+
+            repo="$ORG/$app_id"
+
+            pushed_at=$(gh api "repos/$repo" --jq '.pushed_at' 2>/dev/null || true)
+            [[ -z "$pushed_at" || "$pushed_at" == "null" ]] && {
+              echo "SKIP $app_id: repo not found"
+              continue
+            }
+
+            age_days=$(( ( now - $(date -d "$pushed_at" +%s) ) / 86400 ))
+
+            if (( age_days < STALE_DAYS )); then
+              echo "OK   $app_id (${age_days}d)"
+              continue
+            fi
+
+            echo "STALE $app_id (${age_days}d since last push)"
+
+            existing=$(gh issue list \
+              --repo "$repo" \
+              --state open \
+              --search "Maintenance check in:title" \
+              --json number --jq 'length' 2>/dev/null || echo 0)
+
+            (( existing > 0 )) && {
+              echo "SKIP $app_id: maintenance-check issue already open"
+              continue
+            }
+
+            gh issue create \
+              --repo "$repo" \
+              --title "Maintenance check: is this application still maintained?" \
+              --body "This application has not received any commits in over ${STALE_DAYS} days.
+
+**If you are still maintaining it:** close this issue or push an update. No action is needed if the app is stable and intentionally unchanged.
+
+**If you are no longer maintaining it**, please either:
+- Set \`status: unmaintained\` in \`metadata.yaml\` and open a PR, or
+- Open an issue labelled \`transfer-request\` if you have a successor in mind.
+
+If there is no response within **${GRACE_DAYS} days**, this application will be marked as unmaintained in the Flatforge listing.
+
+See the [Flatforge Policy](https://github.com/${ORG}/flatforge/blob/main/docs/POLICY.md#abandoned-applications) for the full procedure."
+
+            echo "ISSUE $app_id: maintenance-check issue opened"
+          done
