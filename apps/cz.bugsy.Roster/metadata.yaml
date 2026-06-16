@@ -16,7 +16,9 @@ description: |
   - Responsive layout that adapts to narrow windows
 developer: Pavel Baksy
 website: https://git.bugsy.cz/beval/roster
+source: https://git.bugsy.cz/beval/roster
 license: GPL-3.0-or-later
+data_collection: "The app sends HTTP requests to servers specified by the user. No data is transmitted to the developer."
 icon: https://git.bugsy.cz/beval/roster/raw/branch/master/data/icons/hicolor/scalable/apps/cz.bugsy.roster.svg
 screenshots:
   - https://git.bugsy.cz/beval/roster/raw/branch/master/screenshots/main.png
