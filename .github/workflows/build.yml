@@ -131,7 +131,7 @@ jobs:
 
       - name: Add Flathub remote (for SDK dependencies)
         run: |
-          flatpak remote-add --if-not-exists flathub \
+          flatpak remote-add --user --if-not-exists flathub \
             https://dl.flathub.org/repo/flathub.flatpakrepo
 
       - name: Lint manifest
