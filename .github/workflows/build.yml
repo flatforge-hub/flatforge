@@ -110,9 +110,6 @@ jobs:
       matrix:
         manifest: ${{ fromJson(needs.detect.outputs.changed_manifests) }}
 
-    container:
-      image: ghcr.io/flathub/flatpak-builder:latest
-
     steps:
       - uses: actions/checkout@v4
 
@@ -124,6 +121,14 @@ jobs:
           echo "id=$APP_ID" >> "$GITHUB_OUTPUT"
           echo "manifest=$MANIFEST" >> "$GITHUB_OUTPUT"
 
+      - name: Install flatpak-builder
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y flatpak flatpak-builder appstream
+
+      - name: Allow unprivileged user namespaces (required by bwrap sandboxing)
+        run: sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0 || true
+
       - name: Add Flathub remote (for SDK dependencies)
         run: |
           flatpak remote-add --if-not-exists flathub \
@@ -131,8 +136,8 @@ jobs:
 
       - name: Lint manifest
         run: |
-          flatpak-builder-lint --exceptions manifest \
-            "${{ steps.app.outputs.manifest }}" || true
+          docker run --rm -v "$PWD":/mnt ghcr.io/flathub/flatpak-builder-lint:latest \
+            manifest "/mnt/${{ steps.app.outputs.manifest }}" || true
 
       - name: Build Flatpak
         run: |
