@@ -70,7 +70,7 @@ description: |                 # Markdown supported
   Longer description.
 developer: Jane Doe
 website: https://example.com
-source: https://github.com/example/myapp  # public source repository or archive
+source: https://github.com/example/myapp  # required; public source repository or archive
 license: GPL-3.0               # SPDX identifier — see spdx.org/licenses
 icon: https://example.com/icon.png  # 256×256 or larger PNG/SVG
 screenshots:

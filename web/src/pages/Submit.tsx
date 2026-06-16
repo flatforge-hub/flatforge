@@ -56,6 +56,7 @@ description: |
   Longer description in **Markdown**.
 developer: Your Name
 website: https://example.com
+source: https://github.com/example/myapp  # public source repository or archive
 license: GPL-3.0        # SPDX identifier
 icon: https://example.com/icon.png
 screenshots:
