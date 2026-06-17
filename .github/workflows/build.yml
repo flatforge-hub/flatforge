@@ -167,3 +167,20 @@ jobs:
           name: ${{ steps.app.outputs.id }}-repo
           path: /tmp/build-repo/
           retention-days: 7
+
+  # ── Fixed-name aggregate gate for branch protection ───────────────────────
+  # check-sources/build are matrix jobs, so their check names include the
+  # manifest path and vary per submission — branch protection needs one
+  # fixed-name required check instead.
+  all-checks-passed:
+    name: All checks passed
+    needs: [check-limit, detect, check-sources, build]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fail if any required job failed
+        run: |
+          if [ "${{ contains(needs.*.result, 'failure') }}" = "true" ]; then
+            echo "One or more required jobs failed."
+            exit 1
+          fi
